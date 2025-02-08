@@ -11,7 +11,8 @@ import SwiftUI
 struct AppBrowserApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
+                .environmentObject(ConfigurationViewModel())
         }
     }
 }

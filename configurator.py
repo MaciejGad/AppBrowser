@@ -7,8 +7,8 @@ from PIL import Image, ImageDraw
 
 # Ścieżki do plików
 CONFIG_FILE = "config.json"
-INFO_PLIST_PATH = "./YourApp/Info.plist"
-ICON_OUTPUT_PATH = "./YourApp/Assets.xcassets/AppIcon.appiconset/icon.png"
+INFO_PLIST_PATH = "./AppBrowser/Info.plist"
+ICON_OUTPUT_PATH = "./AppBrowser/Assets.xcassets/AppIcon.appiconset/icon.png"
 ICON_GEN_SCRIPT = "./icon_gen"
 
 def load_config():

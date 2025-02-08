@@ -1,5 +1,6 @@
 {
     "app_name": "My Custom App",
     "app_url": "https://example.com",
+    "bundle_id": "pl.maciejgad.myApp",
     "icon_name": "custom_icon"
 }
