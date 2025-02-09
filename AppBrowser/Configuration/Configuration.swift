@@ -4,17 +4,26 @@ final class Configuration: ObservableObject {
     let url: URL
     let host: String
     let useBiometric: Bool
+    let autoAuthentication: Bool
     let exceptionList: URL?
     let toolbarItems: String?
     let showPath: Bool
     
-    init(url: URL, host: String, useBiometric: Bool, exceptionList: URL?, toolbarItems: String?, showPath: Bool) {
-        self.url = url
-        self.host = host
-        self.useBiometric = useBiometric
-        self.exceptionList = exceptionList
-        self.toolbarItems = toolbarItems
-        self.showPath = showPath
+    init(
+        url: URL,
+        host: String,
+        useBiometric: Bool,
+        autoAuthentication: Bool,
+        exceptionList: URL?,
+        toolbarItems: String?,
+        showPath: Bool) {
+            self.url = url
+            self.host = host
+            self.useBiometric = useBiometric
+            self.autoAuthentication = autoAuthentication
+            self.exceptionList = exceptionList
+            self.toolbarItems = toolbarItems
+            self.showPath = showPath
     }
     
     static func loadConfiguration() throws -> Configuration {
@@ -32,6 +41,7 @@ final class Configuration: ObservableObject {
             throw Error.cantCreateURL
         }
         let useBiometric = dictionary[Key.useBiometric.rawValue] as? String ?? "NO"
+        let autoAuthentication = dictionary[Key.autoAuthentication.rawValue] as? String ?? "YES"
         var exceptionList: URL? = nil
         if let exceptionListRaw = dictionary[Key.excpetionList.rawValue] as? String {
             exceptionList = URL(string: exceptionListRaw.replacingOccurrences(of: "\\()", with: ""))
@@ -43,6 +53,7 @@ final class Configuration: ObservableObject {
             url: url,
             host: host,
             useBiometric: useBiometric.toBool(),
+            autoAuthentication: autoAuthentication.toBool(),
             exceptionList: exceptionList,
             toolbarItems: toolbarItems,
             showPath: showPath.toBool()
@@ -53,6 +64,7 @@ final class Configuration: ObservableObject {
         case path = "BASE_PATH"
         case host = "BASE_HOST"
         case useBiometric = "BIOMETRIC_AUTHENTICATION"
+        case autoAuthentication = "AUTO_AUTHENTICATION"
         case excpetionList = "EXCEPTIONS_LIST"
         case toolbarItems = "TOOLBAR_ITEMS"
         case showPath = "SHOW_PATH"

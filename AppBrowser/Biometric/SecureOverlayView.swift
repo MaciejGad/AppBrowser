@@ -39,7 +39,9 @@ struct SecureOverlayView: View {
                     }
                     .padding(.horizontal, 40)
                 }
-            }.padding(.top, 50)
+            }
+            .padding(.top, 50)
+            .padding(.bottom, 20)
         }
     }
     
@@ -58,7 +60,7 @@ struct SecureOverlayView: View {
 
 struct SecureOverlayView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = BiometricViewModel()
+        let viewModel = BiometricViewModel(autoAuthentication: false)
         viewModel.errorMessage = "An error occured"
         return SecureOverlayView().environmentObject(viewModel)
     }

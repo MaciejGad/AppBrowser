@@ -9,7 +9,11 @@ struct AppBrowserApp: App {
                     if configuration.useBiometric {
                         BiometricView {
                             BrowserView()
-                        }.environmentObject(BiometricViewModel())
+                        }.environmentObject(
+                            BiometricViewModel(
+                                autoAuthentication: configuration.autoAuthentication
+                            )
+                        )
                     } else {
                         BrowserView()
                     }

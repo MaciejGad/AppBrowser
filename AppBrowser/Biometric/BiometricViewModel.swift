@@ -7,6 +7,12 @@ final class BiometricViewModel: ObservableObject {
     @Published var lastAuthenticationDate: Date? = nil
     @Published var errorMessage: String? = nil
     
+    let autoAuthentication: Bool
+    
+    init(autoAuthentication: Bool) {
+        self.autoAuthentication = autoAuthentication
+    }
+    
     /// Funkcja uwierzytelniająca przy użyciu biometrii (Face ID / Touch ID) lub kodu urządzenia
     func authenticate() {
         let context = LAContext()
@@ -45,7 +51,9 @@ final class BiometricViewModel: ObservableObject {
                     // Jeśli od ostatniego uwierzytelnienia minęło więcej niż 30 sekund, wymagamy ponownego logowania
                     isLocked = true
                     showOverlay = true
-                    authenticate()
+                    if autoAuthentication {
+                        authenticate()
+                    }
                 } else {
                     if isLocked == false {
                         withAnimation {

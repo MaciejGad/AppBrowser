@@ -17,7 +17,11 @@ struct BiometricView<Content: View>: View {
             }
         }
         // Przy starcie widoku próbujemy automatycznie przeprowadzić autentykację
-        .onAppear(perform: viewModel.authenticate)
+        .onAppear(perform: {
+            if viewModel.autoAuthentication {
+                viewModel.authenticate()
+            }
+        })
         // Monitorujemy zmiany stanu aplikacji (scenePhase), aby przy powrocie sprawdzić, czy minęło 30 sekund
         .onChange(of: scenePhase) { newPhase in
             viewModel.onChange(scenePhase: newPhase)

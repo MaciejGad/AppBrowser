@@ -21,6 +21,7 @@ struct Config: Codable {
     let display_name: String
     let bundle_id: String
     let biometric_authentication: Bool?
+    let auto_authenticate: Bool?
     let icon_name: String?
     let icon_background_color: String?
     let icon_link: String? 
@@ -28,7 +29,7 @@ struct Config: Codable {
     let exception_list: [String]?
     let toolbar_items: String?
     let show_path: Bool?
-
+    
     var shouldCreateIcon: Bool {
         return icon_name != nil || icon_link != nil
     }   
@@ -60,6 +61,9 @@ xcconfigContent += "PRODUCT_BUNDLE_IDENTIFIER = \(config.bundle_id)\n"
 let biometric_authentication = config.biometric_authentication ?? false
 xcconfigContent += "BIOMETRIC_AUTHENTICATION = \(biometric_authentication ? "YES" : "NO")\n"
 
+let auto_authenticate = config.auto_authenticate ?? true
+xcconfigContent += "AUTO_AUTHENTICATION = \(auto_authenticate ? "YES" : "NO")\n"
+
 func remove(file: String) throws {
     if fileManager.fileExists(atPath: file) {
             try fileManager.removeItem(atPath: file)
@@ -73,12 +77,21 @@ func copy(file: String, to: String) throws {
     print("Copied \(file) to \(to)")
 }
 
-func generate(iconName: String, iconBackgroundColor: String, output: String) throws{
+
+func run(command: String, arguments: [String]) throws {
     let process = Process()
     process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-    process.arguments = ["swift", "icon_gen.swift", iconName, iconBackgroundColor, output]
+    process.arguments = [command] + arguments
     try process.run()
     process.waitUntilExit()
+}
+
+func generate(iconName: String, iconBackgroundColor: String, output: String) throws{
+    try run(command: "swift", arguments: ["icon_gen.swift", iconName, iconBackgroundColor, output])
+}
+
+func resize() throws {
+    try run(command: "swift", arguments: ["resize_icons.swift"])
 }
 
 func resizeImage(atPath path: String, toSize size: CGSize) throws {
@@ -115,32 +128,28 @@ func resizeImage(atPath path: String, toSize size: CGSize) throws {
 }
 
 if config.shouldCreateIcon {
-    do {
-        // Remove existing output.png file
-        let outputPath = "\(currentDirectoryPath)/output.png"
-        let destinationPath = "\(currentDirectoryPath)/AppBrowser/Assets.xcassets/AppIcon.appiconset/icon.png"
+    // Remove existing output.png file
+    let outputPath = "\(currentDirectoryPath)/output.png"
+    let destinationPath = "\(currentDirectoryPath)/AppBrowser/Assets.xcassets/AppIcon.appiconset/icon.png"
 
-        try remove(file: outputPath)
+    try remove(file: outputPath)
 
-        if let iconName = config.icon_name {
-            // Generate icon using icon_gen.swift
-            let iconBackgroundColor = config.icon_background_color ?? "#3498db"  // Default color is blue  
-            try generate(iconName: iconName, iconBackgroundColor: iconBackgroundColor, output: outputPath)
-            try copy(file: outputPath, to: destinationPath)
-        } else if let iconLink = config.icon_link {
-           // Download icon from URL
-            guard let url = URL(string: iconLink) else {
-                throw NSError(domain: "Invalid icon link URL", code: 1)
-            }
-            let data = try Data(contentsOf: url)
-            fileManager.createFile(atPath: outputPath, contents: data, attributes: nil)
-            try resizeImage(atPath: outputPath, toSize: CGSize(width: 512, height: 512))
-            try copy(file: outputPath, to: destinationPath)
+    if let iconName = config.icon_name {
+        // Generate icon using icon_gen.swift
+        let iconBackgroundColor = config.icon_background_color ?? "#3498db"  // Default color is blue  
+        try generate(iconName: iconName, iconBackgroundColor: iconBackgroundColor, output: outputPath)
+        try copy(file: outputPath, to: destinationPath)
+    } else if let iconLink = config.icon_link {
+        // Download icon from URL
+        guard let url = URL(string: iconLink) else {
+            throw NSError(domain: "Invalid icon link URL", code: 1)
         }
-    } catch {
-        print("\(error)")
-        exit(1)
-    } 
+        let data = try Data(contentsOf: url)
+        fileManager.createFile(atPath: outputPath, contents: data, attributes: nil)
+        try resizeImage(atPath: outputPath, toSize: CGSize(width: 512, height: 512))
+        try copy(file: outputPath, to: destinationPath)
+    }
+    try resize()
 }
 
 xcconfigContent += "BASE_HOST = \(baseHost)\n"
