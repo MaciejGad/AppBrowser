@@ -25,6 +25,7 @@ struct Config: Codable {
     let icon_background_color: String?
     let icon_link: String? 
     let exception_list_url: String?
+    let exception_list: [String]?
 
     var shouldCreateIcon: Bool {
         return icon_name != nil || icon_link != nil
@@ -144,6 +145,12 @@ xcconfigContent += "BASE_HOST = \(baseHost)\n"
 xcconfigContent += "BASE_PATH = \(basePath)\n"
 if let exceptionListURL = config.exception_list_url {
     xcconfigContent += "EXCEPTIONS_LIST = \(exceptionListURL.replacingOccurrences(of: "//", with: "/\\()/"))\n"
+}
+
+if let exception_list = config.exception_list {
+    let exceptionListData = try JSONSerialization.data(withJSONObject: exception_list, options: .prettyPrinted)
+    let exceptionListPath = "\(currentDirectoryPath)/AppBrowser/url_exceptions.json"
+    try exceptionListData.write(to: URL(fileURLWithPath: exceptionListPath))
 }
 
 // Save to Config.xcconfig file

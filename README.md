@@ -36,7 +36,7 @@ To configure AppBrowser, you need to update the `config.json` file with the foll
     "biometric_authentication": true,
     "icon_name": "f096",
     "icon_background_color": "#3498db",
-    "exception_list_url": "https://raw.githubusercontent.com/MaciejGad/AppBrowser/main/exception_list.json" 
+    "exception_list_url": "https://raw.githubusercontent.com/MaciejGad/AppBrowser/refs/heads/main/AppBrowser/url_exceptions.json" 
 }
 ```
 
