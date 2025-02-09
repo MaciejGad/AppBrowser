@@ -1,15 +1,19 @@
+#!/usr/bin/swift
 import Cocoa
+import CoreText
 import Foundation
 
 // Sprawdzenie, czy podano argumenty
 guard CommandLine.arguments.count > 1 else {
-    print("Użycie: \(CommandLine.arguments[0]) <systemIconName> [hexColor]")
+    print("Użycie: \(CommandLine.arguments[0]) <fontAwesomeUnicode> [hexColor]")
     exit(1)
 }
 
-let iconName = CommandLine.arguments[1]
+let iconUnicode = CommandLine.arguments[1]
 let inputHexColor = CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : "#3498db"
-let outputFileName =  CommandLine.arguments.count > 3 ? CommandLine.arguments[3] : "\(iconName).png"
+
+// Ścieżka do pliku czcionki FontAwesome.ttf
+let fontPath = "./FontAwesome.ttf"
 
 // Funkcja do konwersji koloru HEX na NSColor
 func colorFromHex(_ hex: String) -> NSColor? {
@@ -29,12 +33,26 @@ func colorFromHex(_ hex: String) -> NSColor? {
     return NSColor(red: red, green: green, blue: blue, alpha: 1.0)
 }
 
-// Funkcja generująca pasujący drugi kolor do gradientu (jaśniejszy lub ciemniejszy wariant)
-func adjustedColor(for color: NSColor, brightnessFactor: CGFloat) -> NSColor {
-    let hue = color.hueComponent
-    let saturation = color.saturationComponent
-    let brightness = max(0.1, min(1.0, color.brightnessComponent * brightnessFactor))
-    return NSColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1.0)
+// Funkcja ładująca czcionkę z pliku
+func loadFont(from path: String, size: CGFloat) -> NSFont? {
+    guard let fontData = NSData(contentsOfFile: path) else {
+        print("❌ Nie znaleziono pliku czcionki!")
+        return nil
+    }
+    
+    let provider = CGDataProvider(data: fontData)
+    guard let cgFont = CGFont(provider!) else {
+        print("❌ Błąd ładowania czcionki")
+        return nil
+    }
+    
+    var error: Unmanaged<CFError>?
+    if !CTFontManagerRegisterGraphicsFont(cgFont, &error) {
+        print("❌ Rejestracja czcionki nie powiodła się: \(error!.takeUnretainedValue())")
+        return nil
+    }
+    
+    return NSFont(name: "FontAwesome", size: size)
 }
 
 // Pobranie koloru bazowego
@@ -44,11 +62,11 @@ guard let baseColor = colorFromHex(inputHexColor) else {
 }
 
 // Generowanie drugiego koloru (ciemniejszy o 70%)
-let gradientColor = adjustedColor(for: baseColor, brightnessFactor: 0.7)
+let gradientColor = baseColor.blended(withFraction: 0.7, of: NSColor.black) ?? baseColor
 
 // Ustalamy rozmiary
 let canvasSize = NSSize(width: 512, height: 512)
-let pointSize: CGFloat = canvasSize.height / 2
+let pointSize: CGFloat = canvasSize.height * 0.7
 
 // Tworzymy obraz, w którym będziemy rysować
 let image = NSImage(size: canvasSize)
@@ -72,52 +90,38 @@ if let context = NSGraphicsContext.current?.cgContext {
     }
 }
 
-// Wczytanie systemowej ikony SF Symbol
-guard let systemImage = NSImage(systemSymbolName: iconName, accessibilityDescription: nil) else {
-    print("Nie znaleziono ikony systemowej o nazwie \(iconName)")
+// Wczytanie czcionki FontAwesome
+guard let font = loadFont(from: fontPath, size: pointSize) else {
+    print("❌ Nie udało się załadować czcionki.")
     exit(1)
 }
 
-// Konfiguracja rozmiaru ikony
-let configuration = NSImage.SymbolConfiguration(pointSize: pointSize, weight: .regular)
-guard let configuredImage = systemImage.withSymbolConfiguration(configuration) else {
-    print("Nie udało się skonfigurować ikony")
-    exit(1)
-}
+// Tworzenie tekstu z Font Awesome
+let iconCharacter = String(UnicodeScalar(UInt32(iconUnicode, radix: 16)!)!)
+let attributes: [NSAttributedString.Key: Any] = [
+    .font: font,
+    .foregroundColor: NSColor.white,
+    
+    .shadow: {
+        let shadow = NSShadow()
+        shadow.shadowBlurRadius = 10
+        shadow.shadowOffset = NSSize(width: 5, height: -5)
+        shadow.shadowColor = NSColor.black.withAlphaComponent(0.8)
+        return shadow
+    }()
+]
 
-let iconSize = configuredImage.size
-
-// Barwienie obrazu
-func tintedImage(_ image: NSImage, with tint: NSColor) -> NSImage {
-    let tinted = image.copy() as! NSImage
-    tinted.lockFocus()
-    tint.set()
-    let imageRect = NSRect(origin: .zero, size: tinted.size)
-    imageRect.fill(using: .sourceAtop)
-    tinted.unlockFocus()
-    return tinted
-}
-
-// Barwimy ikonę na biało
-let finalIcon = tintedImage(configuredImage, with: NSColor.white)
-
-// Efekt cienia
-let shadow = NSShadow()
-shadow.shadowOffset = NSSize(width: 5, height: -5)
-shadow.shadowBlurRadius = 10
-shadow.shadowColor = NSColor.black.withAlphaComponent(0.5)
-shadow.set()
-
-// Prostokąt dla ikony
-let iconRect = NSRect(
-    x: (canvasSize.width - iconSize.width) / 2,
-    y: (canvasSize.height - iconSize.height) / 2,
-    width: iconSize.width,
-    height: iconSize.height
+let attributedString = NSAttributedString(string: iconCharacter, attributes: attributes)
+let textSize = attributedString.size()
+print("Rozmiar tekstu: \(textSize)")   
+let textRect = NSRect(
+    x: (canvasSize.width - textSize.width) / 2,
+    y: (canvasSize.height - textSize.height) / 2,
+    width: textSize.width,
+    height: textSize.height
 )
 
-// Rysujemy ikonę na tle
-finalIcon.draw(in: iconRect)
+attributedString.draw(in: textRect)
 
 // Kończymy rysowanie
 image.unlockFocus()
@@ -125,7 +129,7 @@ image.unlockFocus()
 // Pobieramy aktualny katalog użytkownika
 let fileManager = FileManager.default
 let currentPath = fileManager.currentDirectoryPath
-let outputPath = "\(currentPath)/\(outputFileName)"
+let outputPath = "\(currentPath)/output.png"
 
 // Zapis do pliku PNG
 if let tiffData = image.tiffRepresentation,
@@ -133,7 +137,7 @@ if let tiffData = image.tiffRepresentation,
    let pngData = bitmap.representation(using: .png, properties: [:]) {
     do {
         try pngData.write(to: URL(fileURLWithPath: outputPath))
-        // print("Ikona zapisana jako: \(outputPath)")
+        print("Ikona zapisana jako: \(outputPath)")
     } catch {
         print("Błąd podczas zapisywania pliku: \(error)")
     }

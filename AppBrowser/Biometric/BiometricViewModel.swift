@@ -48,7 +48,9 @@ final class BiometricViewModel: ObservableObject {
                     authenticate()
                 } else {
                     if isLocked == false {
-                        showOverlay = false
+                        withAnimation {
+                            showOverlay = false
+                        }
                     }
                 }
             } else {

@@ -3,6 +3,6 @@
     "app_url": "https://github.com/MaciejGad/AppBrowser",
     "bundle_id": "pl.maciejgad.AppBrowser",
     "biometric_authentication": true,
-    "icon_name": "network",
-    "icon_background_color": "#007AFF"   
+    "icon_name": "f096",
+    "icon_background_color": "#3498db"   
 }
