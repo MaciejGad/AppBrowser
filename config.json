@@ -9,5 +9,6 @@
     "exception_list": [
         "https://maciejgad.pl"
     ],
-    "toolbar_items": "goBack,reload,openInExternalBrowser"
+    "show_path": true,
+    "toolbar_items": "goBack,loadHome,reload,openInExternalBrowser,print"
 }

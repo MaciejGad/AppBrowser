@@ -40,7 +40,9 @@ To configure AppBrowser, you need to update the `config.json` file with the foll
     "exception_list_url": "https://raw.githubusercontent.com/MaciejGad/AppBrowser/refs/heads/main/AppBrowser/url_exceptions.json",
     "exception_list": [
         "https://maciejgad.pl"
-    ]
+    ],
+    "show_path": true,
+    "toolbar_items": "goBack,loadHome,reload,openInExternalBrowser,print"
 }
 ```
 
@@ -54,7 +56,14 @@ Here are the details for each configuration option in the `config.json` file:
 - `icon_background_color`: The background color of the application icon, specified in hexadecimal format.
 - `exception_list_url`: The URL to a JSON file containing a list of URL exceptions that the browser should open internally 
 - `exception_list`: An internal list of exceptions that the browser should handle differently. This can include URLs that should be opened within the app instead of an external browser.
-
+- `show_path`: A boolean value (`true` or `false`) indicating whether the current URL path should be displayed in the browser's toolbar.
+- `toolbar_items`: A comma-separated list of toolbar items. Available options include:
+  - `goBack`: Navigates to the previous page in the browser history.
+  - `loadHome`: Loads the home page specified in the configuration.
+  - `reload`: Reloads the current page.
+  - `openInExternalBrowser`: Opens the current page in an external browser.
+  - `print`: Prints the current page.
+  
 These options allow you to customize the behavior and appearance of AppBrowser to suit your needs.
 
 After updating the `config.json` file, run the `configurator.swift` script from the command line to apply the configuration:

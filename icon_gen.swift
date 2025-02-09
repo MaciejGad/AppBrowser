@@ -3,19 +3,19 @@ import Cocoa
 import CoreText
 import Foundation
 
-// Sprawdzenie, czy podano argumenty
+// Check if arguments are provided
 guard CommandLine.arguments.count > 1 else {
-    print("Użycie: \(CommandLine.arguments[0]) <fontAwesomeUnicode> [hexColor]")
+    print("Use: \(CommandLine.arguments[0]) <fontAwesomeUnicode> [hexColor]")
     exit(1)
 }
 
 let iconUnicode = CommandLine.arguments[1]
 let inputHexColor = CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : "#3498db"
 
-// Ścieżka do pliku czcionki FontAwesome.ttf
+// Path to the FontAwesome.ttf font file
 let fontPath = "./FontAwesome.ttf"
 
-// Funkcja do konwersji koloru HEX na NSColor
+// Function to convert HEX color to NSColor
 func colorFromHex(_ hex: String) -> NSColor? {
     var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
     if hexSanitized.hasPrefix("#") {
@@ -33,46 +33,46 @@ func colorFromHex(_ hex: String) -> NSColor? {
     return NSColor(red: red, green: green, blue: blue, alpha: 1.0)
 }
 
-// Funkcja ładująca czcionkę z pliku
+// Function to load font from file
 func loadFont(from path: String, size: CGFloat) -> NSFont? {
     guard let fontData = NSData(contentsOfFile: path) else {
-        print("❌ Nie znaleziono pliku czcionki!")
+        print("❌ Font file not found!")
         return nil
     }
     
     let provider = CGDataProvider(data: fontData)
     guard let cgFont = CGFont(provider!) else {
-        print("❌ Błąd ładowania czcionki")
+        print("❌ Error loading font")
         return nil
     }
     
     var error: Unmanaged<CFError>?
     if !CTFontManagerRegisterGraphicsFont(cgFont, &error) {
-        print("❌ Rejestracja czcionki nie powiodła się: \(error!.takeUnretainedValue())")
+        print("❌ Font registration failed: \(error!.takeUnretainedValue())")
         return nil
     }
     
     return NSFont(name: "FontAwesome", size: size)
 }
 
-// Pobranie koloru bazowego
+// Fetching the base color
 guard let baseColor = colorFromHex(inputHexColor) else {
-    print("Niepoprawny format koloru HEX: \(inputHexColor)")
+    print("Invalid HEX color format: \(inputHexColor)")
     exit(1)
 }
 
-// Generowanie drugiego koloru (ciemniejszy o 70%)
+// Generating the second color (70% darker)
 let gradientColor = baseColor.blended(withFraction: 0.7, of: NSColor.black) ?? baseColor
 
-// Ustalamy rozmiary
+// Setting the sizes
 let canvasSize = NSSize(width: 512, height: 512)
 let pointSize: CGFloat = canvasSize.height * 0.7
 
-// Tworzymy obraz, w którym będziemy rysować
+// Create an image where we will draw
 let image = NSImage(size: canvasSize)
 image.lockFocus()
 
-// Rysowanie gradientowego tła
+// Drawing gradient background
 if let context = NSGraphicsContext.current?.cgContext {
     let colors = [baseColor.cgColor, gradientColor.cgColor] as CFArray
     let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -90,13 +90,13 @@ if let context = NSGraphicsContext.current?.cgContext {
     }
 }
 
-// Wczytanie czcionki FontAwesome
+// load font FontAwesome
 guard let font = loadFont(from: fontPath, size: pointSize) else {
     print("❌ Nie udało się załadować czcionki.")
     exit(1)
 }
 
-// Tworzenie tekstu z Font Awesome
+// Creating text with Font Awesome
 let iconCharacter = String(UnicodeScalar(UInt32(iconUnicode, radix: 16)!)!)
 let attributes: [NSAttributedString.Key: Any] = [
     .font: font,
@@ -113,7 +113,7 @@ let attributes: [NSAttributedString.Key: Any] = [
 
 let attributedString = NSAttributedString(string: iconCharacter, attributes: attributes)
 let textSize = attributedString.size()
-print("Rozmiar tekstu: \(textSize)")   
+
 let textRect = NSRect(
     x: (canvasSize.width - textSize.width) / 2,
     y: (canvasSize.height - textSize.height) / 2,
@@ -123,24 +123,24 @@ let textRect = NSRect(
 
 attributedString.draw(in: textRect)
 
-// Kończymy rysowanie
+// Finish drawing
 image.unlockFocus()
 
-// Pobieramy aktualny katalog użytkownika
+// Get the current user's directory
 let fileManager = FileManager.default
 let currentPath = fileManager.currentDirectoryPath
 let outputPath = "\(currentPath)/output.png"
 
-// Zapis do pliku PNG
+// Save to PNG file
 if let tiffData = image.tiffRepresentation,
    let bitmap = NSBitmapImageRep(data: tiffData),
    let pngData = bitmap.representation(using: .png, properties: [:]) {
     do {
         try pngData.write(to: URL(fileURLWithPath: outputPath))
-        print("Ikona zapisana jako: \(outputPath)")
+        print("Icon saved as: \(outputPath)")
     } catch {
-        print("Błąd podczas zapisywania pliku: \(error)")
+        print("Error saving file: \(error)")
     }
 } else {
-    print("Nie udało się wygenerować danych PNG")
+    print("Failed to generate PNG data")
 }

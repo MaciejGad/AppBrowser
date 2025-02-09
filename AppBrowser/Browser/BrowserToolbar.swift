@@ -6,10 +6,11 @@ struct BrowserToolbar: View {
 
     var body: some View {
         VStack(spacing: 5) {
-            Text(viewModel.curentPath)
-                .multilineTextAlignment(.trailing)
-                .frame(minWidth: 100, maxWidth: .infinity)
-                .padding(.top)
+            if viewModel.showPath {
+                Text(viewModel.curentPath)
+                    .multilineTextAlignment(.trailing)
+                    .frame(minWidth: 100, maxWidth: .infinity)
+            }
             HStack(spacing: 10) {
                 let lastElement = viewModel.toolbarItems.last
                 ForEach(viewModel.toolbarItems) { item in
@@ -27,6 +28,7 @@ struct BrowserToolbar: View {
                 }
             }.padding(.horizontal, 30)
         }
+        .padding(.top, 10)
         .padding(.bottom, 15)
         .background(Color(UIColor.systemGray6))
     }

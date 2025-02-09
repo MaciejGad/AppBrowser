@@ -17,6 +17,7 @@ struct AppBrowserApp: App {
                 .environmentObject(
                     BrowserViewModel(
                         baseUrl: configuration.url,
+                        showPath: configuration.showPath,
                         commands: configuration.toolbarItems
                     )
                 )

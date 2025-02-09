@@ -4,6 +4,7 @@ import UIKit
 
 final class BrowserViewModel: ObservableObject {
     @Published var curentPath: String
+    @Published var showPath: Bool
     @Published var isLoading: Bool
     @Published var error: Error?
     @Published var canGoBack: Bool
@@ -15,13 +16,14 @@ final class BrowserViewModel: ObservableObject {
     
     let stateSubject = PassthroughSubject<Command, Never>()
     
-    init(baseUrl: URL, commands: String?) {
+    init(baseUrl: URL, showPath: Bool, commands: String?) {
         self.baseUrl = baseUrl
         currentURL = baseUrl
         curentPath = baseUrl.path
         isLoading = true
         error = nil
         canGoBack = false
+        self.showPath = showPath
         toolbarItems = Command.load(from: commands)
     }
     

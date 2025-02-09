@@ -27,6 +27,7 @@ struct Config: Codable {
     let exception_list_url: String?
     let exception_list: [String]?
     let toolbar_items: String?
+    let show_path: Bool?
 
     var shouldCreateIcon: Bool {
         return icon_name != nil || icon_link != nil
@@ -157,6 +158,9 @@ if let exception_list = config.exception_list {
 if let toolbarItems = config.toolbar_items {
     xcconfigContent += "TOOLBAR_ITEMS = \(toolbarItems)\n"
 }
+
+let show_path = config.show_path ?? true
+xcconfigContent += "SHOW_PATH = \(show_path ? "YES" : "NO")\n"
 
 // Save to Config.xcconfig file
 do {
