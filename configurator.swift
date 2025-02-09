@@ -1,12 +1,16 @@
 #!/usr/bin/swift
 import Foundation
+import AppKit
 
 // File paths
 let configPath = "config.json"
 let xcconfigPath = "AppBrowser/Config.xcconfig"
 
+let fileManager = FileManager.default
+let currentDirectoryPath = fileManager.currentDirectoryPath
+
 // Read config.json file
-guard let configData = FileManager.default.contents(atPath: configPath) else {
+guard let configData = fileManager.contents(atPath: configPath) else {
     print("Cannot read \(configPath)")
     exit(1)
 }
@@ -19,6 +23,11 @@ struct Config: Codable {
     let biometric_authentication: Bool?
     let icon_name: String?
     let icon_background_color: String?
+    let icon_link: String? 
+
+    var shouldCreateIcon: Bool {
+        return icon_name != nil || icon_link != nil
+    }   
 }
 
 // Decode the JSON data into the Config struct
@@ -47,28 +56,89 @@ xcconfigContent += "PRODUCT_BUNDLE_IDENTIFIER = \(config.bundle_id)\n"
 let biometric_authentication = config.biometric_authentication ?? false
 xcconfigContent += "BIOMETRIC_AUTHENTICATION = \(biometric_authentication ? "YES" : "NO")\n"
 
-if let iconName = config.icon_name {
-    let iconBackgroundColor = config.icon_background_color ?? "#3498db"  // Default color is blue  
+func remove(file: String) throws {
+    if fileManager.fileExists(atPath: file) {
+            try fileManager.removeItem(atPath: file)
+            print("Removed \(file)")
+    }
+}   
+
+func copy(file: String, to: String) throws {
+    try remove(file: to)
+    try fileManager.copyItem(atPath: file, toPath: to)
+    print("Copied \(file) to \(to)")
+}
+
+func generate(iconName: String, iconBackgroundColor: String, output: String) throws{
     let process = Process()
     process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-    process.arguments = ["swift", "icon_gen.swift", iconName, iconBackgroundColor, "output.png"]
-    do {
-        try process.run()
-        process.waitUntilExit()
-        let fileManager = FileManager.default
-        let currentDirectoryPath = fileManager.currentDirectoryPath
-        let sourcePath = "\(currentDirectoryPath)/output.png"
-        let destinationPath = "\(currentDirectoryPath)/AppBrowser/Assets.xcassets/AppIcon.appiconset/icon.png"
-        if fileManager.fileExists(atPath: destinationPath) {
-            try fileManager.removeItem(atPath: destinationPath) // Remove existing icon file    
-        }
-        try fileManager.copyItem(atPath: sourcePath, toPath: destinationPath)
-        print("Icon file copied to \(destinationPath)")
-    } catch {
-        print("Error running icon_gen command: \(error)")
-        exit(1)
-    }
+    process.arguments = ["swift", "icon_gen.swift", iconName, iconBackgroundColor, output]
+    try process.run()
+    process.waitUntilExit()
 }
+
+func resizeImage(atPath path: String, toSize size: CGSize) throws {
+    guard let image = NSImage(contentsOfFile: path) else {
+        throw NSError(domain: "Cannot load image", code: 1)
+    }
+
+    let newImage = NSImage(size: size)
+    newImage.lockFocus()
+
+    let rect = NSRect(origin: .zero, size: size)
+    let imageRect = NSRect(origin: .zero, size: image.size)
+    let aspectRatio = min(size.width / image.size.width, size.height / image.size.height)
+    let scaledImageRect = NSRect(
+        x: (size.width - image.size.width * aspectRatio) / 2,
+        y: (size.height - image.size.height * aspectRatio) / 2,
+        width: image.size.width * aspectRatio,
+        height: image.size.height * aspectRatio
+    )
+
+    NSColor.white.setFill()
+    rect.fill()
+
+    image.draw(in: scaledImageRect, from: imageRect, operation: .sourceOver, fraction: 1.0)
+    newImage.unlockFocus()
+
+    guard let tiffData = newImage.tiffRepresentation,
+            let bitmap = NSBitmapImageRep(data: tiffData),
+            let pngData = bitmap.representation(using: .png, properties: [:]) else {
+        throw NSError(domain: "Cannot create PNG data", code: 2)
+    }
+
+    try pngData.write(to: URL(fileURLWithPath: path))
+}
+
+if config.shouldCreateIcon {
+    do {
+        // Remove existing output.png file
+        let outputPath = "\(currentDirectoryPath)/output.png"
+        let destinationPath = "\(currentDirectoryPath)/AppBrowser/Assets.xcassets/AppIcon.appiconset/icon.png"
+
+        try remove(file: outputPath)
+
+        if let iconName = config.icon_name {
+            // Generate icon using icon_gen.swift
+            let iconBackgroundColor = config.icon_background_color ?? "#3498db"  // Default color is blue  
+            try generate(iconName: iconName, iconBackgroundColor: iconBackgroundColor, output: outputPath)
+            try copy(file: outputPath, to: destinationPath)
+        } else if let iconLink = config.icon_link {
+           // Download icon from URL
+            guard let url = URL(string: iconLink) else {
+                throw NSError(domain: "Invalid icon link URL", code: 1)
+            }
+            let data = try Data(contentsOf: url)
+            fileManager.createFile(atPath: outputPath, contents: data, attributes: nil)
+            try resizeImage(atPath: outputPath, toSize: CGSize(width: 512, height: 512))
+            try copy(file: outputPath, to: destinationPath)
+        }
+    } catch {
+        print("\(error)")
+        exit(1)
+    } 
+}
+
 xcconfigContent += "BASE_HOST = \(baseHost)\n"
 xcconfigContent += "BASE_PATH = \(basePath)\n"
 
