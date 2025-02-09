@@ -1,5 +1,7 @@
 # AppBrowser
 
+![AppBrowser Icon](output.png){ width=200px }
+
 AppBrowser is a simple and efficient web browser application for iOS. This README will guide you through the usage of `Configurator.swift` to configure AppBrowser.
 
 ## Table of Contents
