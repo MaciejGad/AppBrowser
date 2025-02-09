@@ -1,6 +1,6 @@
 import SwiftUI
 
-class ConfigurationViewModel: ObservableObject {
+class LoadConfiguration: ObservableObject {
     @Published var configuration: Configuration?
     @Published var error: Error?
     

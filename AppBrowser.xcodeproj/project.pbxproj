@@ -7,28 +7,50 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D952BDD62D5812B800331A9F /* ConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D952BDD52D5812B800331A9F /* ConfigView.swift */; };
+		D952BDD82D5813D200331A9F /* BiometricViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D952BDD72D5813D200331A9F /* BiometricViewModel.swift */; };
+		D952BDDA2D5813F500331A9F /* SecureOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D952BDD92D5813F500331A9F /* SecureOverlayView.swift */; };
+		D952BDDC2D58141900331A9F /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D952BDDB2D58141900331A9F /* AppIcon.swift */; };
+		D952BDDE2D58148800331A9F /* BiometricView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D952BDDD2D58148800331A9F /* BiometricView.swift */; };
+		D952BDE42D58173100331A9F /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D952BDE32D58173100331A9F /* BrowserViewModel.swift */; };
+		D952BDE62D5819C600331A9F /* AlertData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D952BDE52D5819C600331A9F /* AlertData.swift */; };
+		D952BDE82D5819E800331A9F /* SafeBrowsingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D952BDE72D5819E800331A9F /* SafeBrowsingViewModel.swift */; };
+		D952BDEA2D581ABA00331A9F /* PrintHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D952BDE92D581ABA00331A9F /* PrintHelper.swift */; };
+		D952BDEC2D581B7800331A9F /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D952BDEB2D581B7800331A9F /* WebView.swift */; };
+		D952BDEE2D581C0200331A9F /* BrowserToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D952BDED2D581C0200331A9F /* BrowserToolbar.swift */; };
+		D952BDF02D581C3600331A9F /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D952BDEF2D581C3600331A9F /* BrowserView.swift */; };
 		D9ACBB322D57C82100DDD723 /* AppBrowserApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ACBB312D57C82100DDD723 /* AppBrowserApp.swift */; };
-		D9ACBB342D57C82100DDD723 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ACBB332D57C82100DDD723 /* ContentView.swift */; };
 		D9ACBB362D57C83000DDD723 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9ACBB352D57C83000DDD723 /* Assets.xcassets */; };
 		D9ACBB392D57C83000DDD723 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9ACBB382D57C83000DDD723 /* Preview Assets.xcassets */; };
 		D9ACBB572D57F14800DDD723 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ACBB562D57F14800DDD723 /* Configuration.swift */; };
-		D9ACBB592D57F38200DDD723 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ACBB582D57F38200DDD723 /* MainView.swift */; };
-		D9ACBB5B2D57F3BF00DDD723 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ACBB5A2D57F3BF00DDD723 /* ConfigurationViewModel.swift */; };
-		D9ACBB5D2D57FA0600DDD723 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ACBB5C2D57FA0600DDD723 /* ErrorView.swift */; };
+		D9ACBB592D57F38200DDD723 /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ACBB582D57F38200DDD723 /* StartupView.swift */; };
+		D9ACBB5B2D57F3BF00DDD723 /* LoadConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ACBB5A2D57F3BF00DDD723 /* LoadConfiguration.swift */; };
+		D9ACBB5D2D57FA0600DDD723 /* ConfigurationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ACBB5C2D57FA0600DDD723 /* ConfigurationErrorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D952BDD52D5812B800331A9F /* ConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigView.swift; sourceTree = "<group>"; };
+		D952BDD72D5813D200331A9F /* BiometricViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricViewModel.swift; sourceTree = "<group>"; };
+		D952BDD92D5813F500331A9F /* SecureOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureOverlayView.swift; sourceTree = "<group>"; };
+		D952BDDB2D58141900331A9F /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
+		D952BDDD2D58148800331A9F /* BiometricView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricView.swift; sourceTree = "<group>"; };
+		D952BDE32D58173100331A9F /* BrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewModel.swift; sourceTree = "<group>"; };
+		D952BDE52D5819C600331A9F /* AlertData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertData.swift; sourceTree = "<group>"; };
+		D952BDE72D5819E800331A9F /* SafeBrowsingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBrowsingViewModel.swift; sourceTree = "<group>"; };
+		D952BDE92D581ABA00331A9F /* PrintHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintHelper.swift; sourceTree = "<group>"; };
+		D952BDEB2D581B7800331A9F /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		D952BDED2D581C0200331A9F /* BrowserToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserToolbar.swift; sourceTree = "<group>"; };
+		D952BDEF2D581C3600331A9F /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
 		D9ACBB2E2D57C82100DDD723 /* AppBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9ACBB312D57C82100DDD723 /* AppBrowserApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBrowserApp.swift; sourceTree = "<group>"; };
-		D9ACBB332D57C82100DDD723 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D9ACBB352D57C83000DDD723 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D9ACBB382D57C83000DDD723 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D9ACBB542D57EB3900DDD723 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D9ACBB552D57F0D100DDD723 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D9ACBB562D57F14800DDD723 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
-		D9ACBB582D57F38200DDD723 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		D9ACBB5A2D57F3BF00DDD723 /* ConfigurationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewModel.swift; sourceTree = "<group>"; };
-		D9ACBB5C2D57FA0600DDD723 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		D9ACBB582D57F38200DDD723 /* StartupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupView.swift; sourceTree = "<group>"; };
+		D9ACBB5A2D57F3BF00DDD723 /* LoadConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadConfiguration.swift; sourceTree = "<group>"; };
+		D9ACBB5C2D57FA0600DDD723 /* ConfigurationErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationErrorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +64,50 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D952BDDF2D58161800331A9F /* Biometric */ = {
+			isa = PBXGroup;
+			children = (
+				D952BDD72D5813D200331A9F /* BiometricViewModel.swift */,
+				D952BDDD2D58148800331A9F /* BiometricView.swift */,
+				D952BDD92D5813F500331A9F /* SecureOverlayView.swift */,
+			);
+			path = Biometric;
+			sourceTree = "<group>";
+		};
+		D952BDE02D58162B00331A9F /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				D9ACBB582D57F38200DDD723 /* StartupView.swift */,
+				D952BDD52D5812B800331A9F /* ConfigView.swift */,
+				D9ACBB5A2D57F3BF00DDD723 /* LoadConfiguration.swift */,
+				D9ACBB5C2D57FA0600DDD723 /* ConfigurationErrorView.swift */,
+				D9ACBB562D57F14800DDD723 /* Configuration.swift */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		D952BDE12D58168D00331A9F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				D952BDDB2D58141900331A9F /* AppIcon.swift */,
+				D952BDE92D581ABA00331A9F /* PrintHelper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		D952BDE22D58171700331A9F /* Browser */ = {
+			isa = PBXGroup;
+			children = (
+				D952BDEF2D581C3600331A9F /* BrowserView.swift */,
+				D952BDE32D58173100331A9F /* BrowserViewModel.swift */,
+				D952BDE52D5819C600331A9F /* AlertData.swift */,
+				D952BDE72D5819E800331A9F /* SafeBrowsingViewModel.swift */,
+				D952BDEB2D581B7800331A9F /* WebView.swift */,
+				D952BDED2D581C0200331A9F /* BrowserToolbar.swift */,
+			);
+			path = Browser;
+			sourceTree = "<group>";
+		};
 		D9ACBB252D57C82100DDD723 = {
 			isa = PBXGroup;
 			children = (
@@ -61,15 +127,14 @@
 		D9ACBB302D57C82100DDD723 /* AppBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				D9ACBB312D57C82100DDD723 /* AppBrowserApp.swift */,
+				D952BDE02D58162B00331A9F /* Configuration */,
+				D952BDDF2D58161800331A9F /* Biometric */,
+				D952BDE22D58171700331A9F /* Browser */,
+				D952BDE12D58168D00331A9F /* Helpers */,
+				D9ACBB352D57C83000DDD723 /* Assets.xcassets */,
 				D9ACBB542D57EB3900DDD723 /* Config.xcconfig */,
 				D9ACBB552D57F0D100DDD723 /* Info.plist */,
-				D9ACBB312D57C82100DDD723 /* AppBrowserApp.swift */,
-				D9ACBB332D57C82100DDD723 /* ContentView.swift */,
-				D9ACBB582D57F38200DDD723 /* MainView.swift */,
-				D9ACBB5A2D57F3BF00DDD723 /* ConfigurationViewModel.swift */,
-				D9ACBB562D57F14800DDD723 /* Configuration.swift */,
-				D9ACBB5C2D57FA0600DDD723 /* ErrorView.swift */,
-				D9ACBB352D57C83000DDD723 /* Assets.xcassets */,
 				D9ACBB372D57C83000DDD723 /* Preview Content */,
 			);
 			path = AppBrowser;
@@ -153,11 +218,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D952BDD82D5813D200331A9F /* BiometricViewModel.swift in Sources */,
+				D952BDD62D5812B800331A9F /* ConfigView.swift in Sources */,
+				D952BDDC2D58141900331A9F /* AppIcon.swift in Sources */,
+				D952BDE42D58173100331A9F /* BrowserViewModel.swift in Sources */,
+				D952BDE62D5819C600331A9F /* AlertData.swift in Sources */,
+				D952BDDE2D58148800331A9F /* BiometricView.swift in Sources */,
+				D952BDEE2D581C0200331A9F /* BrowserToolbar.swift in Sources */,
+				D952BDF02D581C3600331A9F /* BrowserView.swift in Sources */,
+				D952BDEC2D581B7800331A9F /* WebView.swift in Sources */,
+				D952BDE82D5819E800331A9F /* SafeBrowsingViewModel.swift in Sources */,
+				D952BDEA2D581ABA00331A9F /* PrintHelper.swift in Sources */,
 				D9ACBB572D57F14800DDD723 /* Configuration.swift in Sources */,
-				D9ACBB5D2D57FA0600DDD723 /* ErrorView.swift in Sources */,
-				D9ACBB592D57F38200DDD723 /* MainView.swift in Sources */,
-				D9ACBB342D57C82100DDD723 /* ContentView.swift in Sources */,
-				D9ACBB5B2D57F3BF00DDD723 /* ConfigurationViewModel.swift in Sources */,
+				D9ACBB5D2D57FA0600DDD723 /* ConfigurationErrorView.swift in Sources */,
+				D9ACBB592D57F38200DDD723 /* StartupView.swift in Sources */,
+				D9ACBB5B2D57F3BF00DDD723 /* LoadConfiguration.swift in Sources */,
+				D952BDDA2D5813F500331A9F /* SecureOverlayView.swift in Sources */,
 				D9ACBB322D57C82100DDD723 /* AppBrowserApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -292,11 +368,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AppBrowser/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Needed for biometric ";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -323,11 +402,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AppBrowser/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Needed for biometric ";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

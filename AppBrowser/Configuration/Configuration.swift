@@ -1,12 +1,14 @@
 import Foundation
 
-class Configuration {
+final class Configuration: ObservableObject {
     let url: URL
     let host: String
+    let useBiometric: Bool
     
-    init(url: URL, host: String) {
+    init(url: URL, host: String, useBiometric: Bool) {
         self.url = url
         self.host = host
+        self.useBiometric = useBiometric
     }
     
     static func loadConfiguration() throws -> Configuration {
@@ -23,12 +25,20 @@ class Configuration {
         guard let url = URL(string: "https://\(host)\(path)") else {
             throw Error.canCreateURL
         }
-        return Configuration(url: url, host: host)
+        let useBiometricRaw = dictionary[Key.useBiometric.rawValue] as? String ?? "NO"
+        let useBiometric: Bool
+        if useBiometricRaw == "YES" {
+            useBiometric = true
+        } else {
+            useBiometric = false
+        }
+        return Configuration(url: url, host: host, useBiometric: useBiometric)
     }
     
     private enum Key: String {
         case path = "BASE_PATH"
         case host = "BASE_HOST"
+        case useBiometric = "BIOMETRIC_AUTHENTICATION"
     }
     
     enum Error: Swift.Error, LocalizedError {

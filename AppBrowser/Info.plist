@@ -6,5 +6,7 @@
 	<string>$(BASE_HOST)</string>
 	<key>BASE_PATH</key>
 	<string>$(BASE_PATH)</string>
+	<key>BIOMETRIC_AUTHENTICATION</key>
+	<string>$(BIOMETRIC_AUTHENTICATION)</string>
 </dict>
 </plist>

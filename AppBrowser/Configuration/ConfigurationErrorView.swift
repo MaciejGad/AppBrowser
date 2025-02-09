@@ -1,6 +1,7 @@
 import SwiftUI
 
-struct ErrorView: View {
+struct ConfigurationErrorView: View {
+    var title: String
     var message: String
 
     var body: some View {
@@ -11,7 +12,7 @@ struct ErrorView: View {
                 .frame(width: 80, height: 80)
                 .foregroundColor(.red)
 
-            Text("App Startup Error")
+            Text(title)
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundColor(.primary)
@@ -30,10 +31,11 @@ struct ErrorView: View {
     }
 }
 
-// Podgląd w SwiftUI
-struct ErrorView_Previews: PreviewProvider {
+struct ConfigurationErrorView_Previews: PreviewProvider {
     static var previews: some View {
-        ErrorView(message: "Something went wrong. Please check your internet connection and try again.")
+        ConfigurationErrorView(
+            title: "App Startup Error",
+            message: "Something went wrong. Please check your internet connection and try again.")
     }
 }
 

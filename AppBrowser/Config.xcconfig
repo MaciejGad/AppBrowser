@@ -1,3 +1,5 @@
-PRODUCT_BUNDLE_IDENTIFIER = codes.maciejgad.AppBrowser
+DISPLAY_NAME = Maciej Gad
+PRODUCT_BUNDLE_IDENTIFIER = pl.maciejgad.AppBrowser
+BIOMETRIC_AUTHENTICATION = YES
 BASE_HOST = maciejgad.pl
-BASE_PATH = /deploy
+BASE_PATH = 

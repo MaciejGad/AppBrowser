@@ -1,6 +1,8 @@
 {
-    "app_name": "My Custom App",
-    "app_url": "https://example.com",
-    "bundle_id": "pl.maciejgad.myApp",
-    "icon_name": "custom_icon"
+    "display_name": "Maciej Gad",
+    "app_url": "https://maciejgad.pl",
+    "bundle_id": "pl.maciejgad.AppBrowser",
+    "biometric_authentication": false,
+    "icon_name": "app.fill",
+    "icon_background_color": "#FF0000"   
 }
