@@ -1,8 +1,7 @@
+<img src="output.png" alt="AppBrowser Icon" width="200px">
+
 # AppBrowser
-
-![AppBrowser Icon](output.png){ width=200px }
-
-AppBrowser is a simple and efficient web browser application for iOS. This README will guide you through the usage of `Configurator.swift` to configure AppBrowser.
+AppBrowser is a simple and efficient web browser application for iOS. This README will guide you through the usage of <code>configurator.swift</code> to configure AppBrowser.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -70,7 +69,7 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 
 ## Author
 
-AppBrowser was built by Maciej Gad. Maciej is a software developer with a passion for creating efficient and user-friendly applications. With a background in iOS development, Maciej has worked on various projects ranging from small utilities to large-scale applications. For more information, visit [maciejgad.pl](https://maciejgad.pl) or follow him on [GitHub](https://github.com/MaciejGad) and [LinkedIn](https://www.linkedin.com/in/maciejgad/).
+AppBrowser was built by Maciej Gad. Maciej is a software developer with a passion for creating efficient and user-friendly applications. With a background in iOS development, Maciej has worked on various projects ranging from small utilities to large-scale applications. For more information, visit [maciejgad.pl](https://maciejgad.pl) or follow him on [GitHub](https://github.com/MaciejGad) and [LinkedIn](https://www.linkedin.com/in/gadmaciej/).
 
 
 ## License
