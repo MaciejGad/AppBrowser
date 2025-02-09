@@ -24,6 +24,7 @@ struct Config: Codable {
     let icon_name: String?
     let icon_background_color: String?
     let icon_link: String? 
+    let exception_list_url: String?
 
     var shouldCreateIcon: Bool {
         return icon_name != nil || icon_link != nil
@@ -141,6 +142,9 @@ if config.shouldCreateIcon {
 
 xcconfigContent += "BASE_HOST = \(baseHost)\n"
 xcconfigContent += "BASE_PATH = \(basePath)\n"
+if let exceptionListURL = config.exception_list_url {
+    xcconfigContent += "EXCEPTIONS_LIST = \(exceptionListURL.replacingOccurrences(of: "//", with: "/\\()/"))\n"
+}
 
 // Save to Config.xcconfig file
 do {

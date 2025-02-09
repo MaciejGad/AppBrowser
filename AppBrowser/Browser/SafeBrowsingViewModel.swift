@@ -4,13 +4,15 @@ final class SafeBrowsingViewModel: ObservableObject {
     @Published var alertData: AlertData? = nil
     
     private let baseHost: String
+    private let exceptionList: URL?
     
     private var continuation: CheckedContinuation<OpenExternalHostAction, Never>? = nil
     private var exceptions: Set<String> = []
     private var safeHostLeft: Bool = false
     
-    init(baseHost: String) {
+    init(baseHost: String, exceptionList: URL?) {
         self.baseHost = baseHost
+        self.exceptionList = exceptionList
         loadExceptions()
     }
     
@@ -89,7 +91,7 @@ private extension SafeBrowsingViewModel {
     
     func loadExceptionsFromRemote() async {
         do {
-            if let remoteUrl = remoteUrl() {
+            if let remoteUrl = exceptionList {
                 let (data, response) = try await URLSession.shared.data(from: remoteUrl)
                 if (response as? HTTPURLResponse)?.statusCode == 200 {
                     try await decode(exceptionListData: data)
@@ -99,12 +101,9 @@ private extension SafeBrowsingViewModel {
             print("Błąd podczas ładowania wyjątków: \(error)")
         }
     }
+    
     func fileUrl() -> URL? {
         Bundle.main.url(forResource: "url_exceptions", withExtension: "json")
-    }
-    
-    func remoteUrl() -> URL? {
-        URL(string: "https://maciejgad.pl/url_exceptions.json?v=1")
     }
     
     func decode(exceptionListData: Data) async throws {

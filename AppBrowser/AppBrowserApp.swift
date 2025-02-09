@@ -18,7 +18,10 @@ struct AppBrowserApp: App {
                     BrowserViewModel(baseUrl: configuration.url)
                 )
                 .environmentObject(
-                    SafeBrowsingViewModel(baseHost: configuration.host)
+                    SafeBrowsingViewModel(
+                        baseHost: configuration.host,
+                        exceptionList: configuration.exceptionList
+                    )
                 )
                 .environmentObject(
                     PrintHelper()

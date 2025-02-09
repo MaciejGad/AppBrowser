@@ -8,5 +8,7 @@
 	<string>$(BASE_PATH)</string>
 	<key>BIOMETRIC_AUTHENTICATION</key>
 	<string>$(BIOMETRIC_AUTHENTICATION)</string>
+	<key>EXCEPTIONS_LIST</key>
+	<string>$(EXCEPTIONS_LIST)</string>
 </dict>
 </plist>

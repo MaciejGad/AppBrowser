@@ -3,3 +3,4 @@ PRODUCT_BUNDLE_IDENTIFIER = pl.maciejgad.AppBrowser
 BIOMETRIC_AUTHENTICATION = YES
 BASE_HOST = github.com
 BASE_PATH = /MaciejGad/AppBrowser
+EXCEPTIONS_LIST = https:/\()/raw.githubusercontent.com/MaciejGad/AppBrowser/main/exception_list.json

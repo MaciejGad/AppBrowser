@@ -4,11 +4,13 @@ final class Configuration: ObservableObject {
     let url: URL
     let host: String
     let useBiometric: Bool
+    let exceptionList: URL?
     
-    init(url: URL, host: String, useBiometric: Bool) {
+    init(url: URL, host: String, useBiometric: Bool, exceptionList: URL?) {
         self.url = url
         self.host = host
         self.useBiometric = useBiometric
+        self.exceptionList = exceptionList
     }
     
     static func loadConfiguration() throws -> Configuration {
@@ -23,7 +25,7 @@ final class Configuration: ObservableObject {
         }
         let path = dictionary[Key.path.rawValue] as? String ?? ""
         guard let url = URL(string: "https://\(host)\(path)") else {
-            throw Error.canCreateURL
+            throw Error.cantCreateURL
         }
         let useBiometricRaw = dictionary[Key.useBiometric.rawValue] as? String ?? "NO"
         let useBiometric: Bool
@@ -32,19 +34,24 @@ final class Configuration: ObservableObject {
         } else {
             useBiometric = false
         }
-        return Configuration(url: url, host: host, useBiometric: useBiometric)
+        var exceptionList: URL? = nil
+        if let exceptionListRaw = dictionary[Key.excpetionList.rawValue] as? String {
+            exceptionList = URL(string: exceptionListRaw.replacingOccurrences(of: "\\()", with: ""))
+        }
+        return Configuration(url: url, host: host, useBiometric: useBiometric, exceptionList: exceptionList)
     }
     
     private enum Key: String {
         case path = "BASE_PATH"
         case host = "BASE_HOST"
         case useBiometric = "BIOMETRIC_AUTHENTICATION"
+        case excpetionList = "EXCEPTIONS_LIST"
     }
     
     enum Error: Swift.Error, LocalizedError {
         case noInfoDictionary
         case noHost
-        case canCreateURL
+        case cantCreateURL
         
         var errorDescription: String? {
             switch self {
@@ -52,7 +59,7 @@ final class Configuration: ObservableObject {
                 return "Lack of Info Dictionary"
             case .noHost:
                 return "No host in configuration file"
-            case .canCreateURL:
+            case .cantCreateURL:
                 return "Can't create URL from provied host and path"
             }
         }
