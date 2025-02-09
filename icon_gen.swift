@@ -80,7 +80,6 @@ guard let systemImage = NSImage(systemSymbolName: iconName, accessibilityDescrip
 
 // Konfiguracja rozmiaru ikony
 let configuration = NSImage.SymbolConfiguration(pointSize: pointSize, weight: .regular)
-print(configuration)
 guard let configuredImage = systemImage.withSymbolConfiguration(configuration) else {
     print("Nie udało się skonfigurować ikony")
     exit(1)
@@ -134,7 +133,7 @@ if let tiffData = image.tiffRepresentation,
    let pngData = bitmap.representation(using: .png, properties: [:]) {
     do {
         try pngData.write(to: URL(fileURLWithPath: outputPath))
-        print("Ikona zapisana jako: \(outputPath)")
+        // print("Ikona zapisana jako: \(outputPath)")
     } catch {
         print("Błąd podczas zapisywania pliku: \(error)")
     }

@@ -1,5 +1,5 @@
-DISPLAY_NAME = Maciej Gad
+DISPLAY_NAME = AppBrowser
 PRODUCT_BUNDLE_IDENTIFIER = pl.maciejgad.AppBrowser
 BIOMETRIC_AUTHENTICATION = YES
-BASE_HOST = maciejgad.pl
-BASE_PATH = 
+BASE_HOST = github.com
+BASE_PATH = /MaciejGad/AppBrowser

@@ -47,8 +47,7 @@ let biometric_authentication = config.biometric_authentication ?? false
 xcconfigContent += "BIOMETRIC_AUTHENTICATION = \(biometric_authentication ? "YES" : "NO")\n"
 
 if let iconName = config.icon_name {
-    let iconBackgroundColor = config.icon_background_color ?? "#3498db"  // Default color is blue
-    print(iconBackgroundColor)   
+    let iconBackgroundColor = config.icon_background_color ?? "#3498db"  // Default color is blue  
     let process = Process()
     process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
     process.arguments = ["swift", "icon_gen.swift", iconName, iconBackgroundColor, "output.png"]

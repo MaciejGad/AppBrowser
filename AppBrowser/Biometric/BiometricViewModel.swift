@@ -47,12 +47,18 @@ final class BiometricViewModel: ObservableObject {
                     showOverlay = true
                     authenticate()
                 } else {
-                    isLocked = false
-                    showOverlay = false
+                    if isLocked == false {
+                        showOverlay = false
+                    }
                 }
+            } else {
+                isLocked = true
+                showOverlay = true
             }
         case .background:
-            lastAuthenticationDate = Date()
+            if !isLocked {
+                lastAuthenticationDate = Date()
+            }
             showOverlay = true
         case .inactive:
             showOverlay = true
