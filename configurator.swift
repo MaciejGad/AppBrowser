@@ -26,6 +26,7 @@ struct Config: Codable {
     let icon_link: String? 
     let exception_list_url: String?
     let exception_list: [String]?
+    let toolbar_items: String?
 
     var shouldCreateIcon: Bool {
         return icon_name != nil || icon_link != nil
@@ -151,6 +152,10 @@ if let exception_list = config.exception_list {
     let exceptionListData = try JSONSerialization.data(withJSONObject: exception_list, options: .prettyPrinted)
     let exceptionListPath = "\(currentDirectoryPath)/AppBrowser/url_exceptions.json"
     try exceptionListData.write(to: URL(fileURLWithPath: exceptionListPath))
+}
+
+if let toolbarItems = config.toolbar_items {
+    xcconfigContent += "TOOLBAR_ITEMS = \(toolbarItems)\n"
 }
 
 // Save to Config.xcconfig file

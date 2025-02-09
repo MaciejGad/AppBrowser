@@ -8,5 +8,6 @@
     "exception_list_url": "https://raw.githubusercontent.com/MaciejGad/AppBrowser/refs/heads/main/AppBrowser/url_exceptions.json",
     "exception_list": [
         "https://maciejgad.pl"
-    ]
+    ],
+    "toolbar_items": "goBack,reload,openInExternalBrowser"
 }

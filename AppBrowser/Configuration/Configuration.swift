@@ -6,13 +6,15 @@ final class Configuration: ObservableObject {
     let useBiometric: Bool
     let exceptionList: URL?
     let toolbarItems: String?
+    let showPath: Bool
     
-    init(url: URL, host: String, useBiometric: Bool, exceptionList: URL?, toolbarItems: String?) {
+    init(url: URL, host: String, useBiometric: Bool, exceptionList: URL?, toolbarItems: String?, showPath: Bool) {
         self.url = url
         self.host = host
         self.useBiometric = useBiometric
         self.exceptionList = exceptionList
         self.toolbarItems = toolbarItems
+        self.showPath = showPath
     }
     
     static func loadConfiguration() throws -> Configuration {
@@ -29,19 +31,22 @@ final class Configuration: ObservableObject {
         guard let url = URL(string: "https://\(host)\(path)") else {
             throw Error.cantCreateURL
         }
-        let useBiometricRaw = dictionary[Key.useBiometric.rawValue] as? String ?? "NO"
-        let useBiometric: Bool
-        if useBiometricRaw == "YES" {
-            useBiometric = true
-        } else {
-            useBiometric = false
-        }
+        let useBiometric = dictionary[Key.useBiometric.rawValue] as? String ?? "NO"
         var exceptionList: URL? = nil
         if let exceptionListRaw = dictionary[Key.excpetionList.rawValue] as? String {
             exceptionList = URL(string: exceptionListRaw.replacingOccurrences(of: "\\()", with: ""))
         }
         let toolbarItems = dictionary[Key.toolbarItems.rawValue] as? String
-        return Configuration(url: url, host: host, useBiometric: useBiometric, exceptionList: exceptionList, toolbarItems: toolbarItems)
+        let showPath = dictionary[Key.showPath.rawValue] as? String ?? "NO"
+        
+        return Configuration(
+            url: url,
+            host: host,
+            useBiometric: useBiometric.toBool(),
+            exceptionList: exceptionList,
+            toolbarItems: toolbarItems,
+            showPath: showPath.toBool()
+        )
     }
     
     private enum Key: String {
@@ -50,6 +55,7 @@ final class Configuration: ObservableObject {
         case useBiometric = "BIOMETRIC_AUTHENTICATION"
         case excpetionList = "EXCEPTIONS_LIST"
         case toolbarItems = "TOOLBAR_ITEMS"
+        case showPath = "SHOW_PATH"
     }
     
     enum Error: Swift.Error, LocalizedError {
@@ -68,5 +74,14 @@ final class Configuration: ObservableObject {
             }
         }
     }
-    
+}
+
+extension String {
+    func toBool() -> Bool {
+        if self == "YES" {
+            return true
+        } else {
+            return false
+        }
+    }
 }
