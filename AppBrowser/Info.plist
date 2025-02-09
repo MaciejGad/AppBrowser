@@ -10,5 +10,7 @@
 	<string>$(BIOMETRIC_AUTHENTICATION)</string>
 	<key>EXCEPTIONS_LIST</key>
 	<string>$(EXCEPTIONS_LIST)</string>
+	<key>TOOLBAR_ITEMS</key>
+	<string>$(TOOLBAR_ITEMS)</string>
 </dict>
 </plist>

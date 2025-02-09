@@ -4,3 +4,4 @@ BIOMETRIC_AUTHENTICATION = YES
 BASE_HOST = github.com
 BASE_PATH = /MaciejGad/AppBrowser
 EXCEPTIONS_LIST = https:/\()/raw.githubusercontent.com/MaciejGad/AppBrowser/refs/heads/main/AppBrowser/url_exceptions.json
+TOOLBAR_ITEMS = goBack,reload,openInExternalBrowser

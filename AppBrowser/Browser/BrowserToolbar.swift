@@ -11,7 +11,8 @@ struct BrowserToolbar: View {
                 .frame(minWidth: 100, maxWidth: .infinity)
                 .padding(.top)
             HStack(spacing: 10) {
-                ForEach(viewModel.toolbarItems, id: \.self) { item in
+                let lastElement = viewModel.toolbarItems.last
+                ForEach(viewModel.toolbarItems) { item in
                     Button(action: {
                         viewModel.handle(command: item)
                     }) {
@@ -20,8 +21,9 @@ struct BrowserToolbar: View {
                     }.disabled(
                         item == .goBack && !viewModel.canGoBack
                     )
-                    
-                    Spacer()
+                    if item != lastElement {
+                        Spacer()
+                    }
                 }
             }.padding(.horizontal, 30)
         }
