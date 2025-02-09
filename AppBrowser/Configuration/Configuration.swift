@@ -5,12 +5,14 @@ final class Configuration: ObservableObject {
     let host: String
     let useBiometric: Bool
     let exceptionList: URL?
+    let toolbarItems: String?
     
-    init(url: URL, host: String, useBiometric: Bool, exceptionList: URL?) {
+    init(url: URL, host: String, useBiometric: Bool, exceptionList: URL?, toolbarItems: String?) {
         self.url = url
         self.host = host
         self.useBiometric = useBiometric
         self.exceptionList = exceptionList
+        self.toolbarItems = toolbarItems
     }
     
     static func loadConfiguration() throws -> Configuration {
@@ -38,7 +40,8 @@ final class Configuration: ObservableObject {
         if let exceptionListRaw = dictionary[Key.excpetionList.rawValue] as? String {
             exceptionList = URL(string: exceptionListRaw.replacingOccurrences(of: "\\()", with: ""))
         }
-        return Configuration(url: url, host: host, useBiometric: useBiometric, exceptionList: exceptionList)
+        let toolbarItems = dictionary[Key.toolbarItems.rawValue] as? String
+        return Configuration(url: url, host: host, useBiometric: useBiometric, exceptionList: exceptionList, toolbarItems: toolbarItems)
     }
     
     private enum Key: String {
@@ -46,6 +49,7 @@ final class Configuration: ObservableObject {
         case host = "BASE_HOST"
         case useBiometric = "BIOMETRIC_AUTHENTICATION"
         case excpetionList = "EXCEPTIONS_LIST"
+        case toolbarItems = "TOOLBAR_ITEMS"
     }
     
     enum Error: Swift.Error, LocalizedError {

@@ -15,7 +15,10 @@ struct AppBrowserApp: App {
                     }
                 }
                 .environmentObject(
-                    BrowserViewModel(baseUrl: configuration.url)
+                    BrowserViewModel(
+                        baseUrl: configuration.url,
+                        commands: configuration.toolbarItems ?? ""
+                    )
                 )
                 .environmentObject(
                     SafeBrowsingViewModel(

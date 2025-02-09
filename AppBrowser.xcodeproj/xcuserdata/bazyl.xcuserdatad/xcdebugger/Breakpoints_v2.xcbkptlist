@@ -8,16 +8,64 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "37823225-ED37-40BF-B42C-196F5797F925"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AppBrowser/Configuration/Configuration.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
             landmarkName = "loadConfiguration()"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7EEB6A88-37C1-435C-8CA4-C3544DA056B9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AppBrowser/Browser/BrowserViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "init(baseUrl:commands:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "7EEB6A88-37C1-435C-8CA4-C3544DA056B9 - 1da93e9141a5c46f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AppBrowser.BrowserViewModel.init(baseUrl: Foundation.URL, commands: Swift.String) -&gt; AppBrowser.BrowserViewModel"
+                  moduleName = "AppBrowser"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bazyl/Code/AppBrowser/AppBrowser/Browser/BrowserViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "1163">
+               </Location>
+               <Location
+                  uuid = "7EEB6A88-37C1-435C-8CA4-C3544DA056B9 - ca1c9070e2eaf436"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Substring) -&gt; Swift.Optional&lt;AppBrowser.Command&gt; in AppBrowser.BrowserViewModel.init(baseUrl: Foundation.URL, commands: Swift.String) -&gt; AppBrowser.BrowserViewModel"
+                  moduleName = "AppBrowser"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bazyl/Code/AppBrowser/AppBrowser/Browser/BrowserViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "69">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

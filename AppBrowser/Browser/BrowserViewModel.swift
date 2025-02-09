@@ -8,21 +8,48 @@ final class BrowserViewModel: ObservableObject {
     @Published var error: Error?
     @Published var canGoBack: Bool
     
+    @Published var toolbarItems: [Command]
+
     let baseUrl: URL
     var currentURL: URL?
     
-    let stateSubject = PassthroughSubject<State, Never>()
+    let stateSubject = PassthroughSubject<Command, Never>()
     
-    init(baseUrl: URL) {
+    init(baseUrl: URL, commands: String) {
         self.baseUrl = baseUrl
         currentURL = baseUrl
         curentPath = baseUrl.path
         isLoading = true
         error = nil
         canGoBack = false
+        let items = commands.split(separator: ",").compactMap {
+            Command(rawValue: String($0))
+        }
+        if items.isEmpty {
+            toolbarItems = Command.allCases
+        } else {
+            toolbarItems = items
+        }
     }
     
     @MainActor
+    func handle(command: Command) {
+        switch command {
+        case .goBack:
+            goBack()
+        case .reload:
+            reload()
+        case .loadHome:
+            loadHome()
+        case .openInExternalBrowser:
+            openInExternalBrowser()
+        case .print:
+            print()
+        }
+    }
+
+    @MainActor
+    private
     func goBack() {
         if error == nil {
             stateSubject.send(.goBack)
@@ -32,6 +59,7 @@ final class BrowserViewModel: ObservableObject {
     }
     
     @MainActor
+    private
     func reload() {
         error = nil
         isLoading = true
@@ -39,6 +67,7 @@ final class BrowserViewModel: ObservableObject {
     }
     
     @MainActor
+    private
     func loadHome() {
         error = nil
         isLoading = true
@@ -46,6 +75,7 @@ final class BrowserViewModel: ObservableObject {
     }
     
     @MainActor
+    private
     func print() {
         stateSubject.send(.print)
     }
@@ -74,15 +104,12 @@ final class BrowserViewModel: ObservableObject {
         return currentHost == baseHost
     }
     
+    @MainActor
+    private
     func openInExternalBrowser() {
         guard let currentURL else { return }
         UIApplication.shared.open(currentURL, options: [:], completionHandler: nil)
     }
     
-    enum State {
-        case goBack
-        case reload
-        case loadHome
-        case print
-    }
+    
 }

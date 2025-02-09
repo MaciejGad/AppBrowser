@@ -106,7 +106,7 @@ struct WebView: UIViewRepresentable {
             case .externalBrower:
                 await MainActor.run {
                     parent.viewModel.currentURL = url
-                    parent.viewModel.openInExternalBrowser()
+                    parent.viewModel.handle(command: .openInExternalBrowser)
                 }
                 return .cancel
             }
