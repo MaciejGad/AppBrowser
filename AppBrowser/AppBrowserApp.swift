@@ -17,7 +17,7 @@ struct AppBrowserApp: App {
                 .environmentObject(
                     BrowserViewModel(
                         baseUrl: configuration.url,
-                        commands: configuration.toolbarItems ?? ""
+                        commands: configuration.toolbarItems
                     )
                 )
                 .environmentObject(

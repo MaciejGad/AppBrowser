@@ -15,21 +15,14 @@ final class BrowserViewModel: ObservableObject {
     
     let stateSubject = PassthroughSubject<Command, Never>()
     
-    init(baseUrl: URL, commands: String) {
+    init(baseUrl: URL, commands: String?) {
         self.baseUrl = baseUrl
         currentURL = baseUrl
         curentPath = baseUrl.path
         isLoading = true
         error = nil
         canGoBack = false
-        let items = commands.split(separator: ",").compactMap {
-            Command(rawValue: String($0))
-        }
-        if items.isEmpty {
-            toolbarItems = Command.allCases
-        } else {
-            toolbarItems = items
-        }
+        toolbarItems = Command.load(from: commands)
     }
     
     @MainActor
