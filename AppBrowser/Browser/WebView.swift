@@ -16,6 +16,10 @@ struct WebView: UIViewRepresentable {
         let coordinator = context.coordinator
         webView.navigationDelegate = coordinator
         webView.uiDelegate = coordinator
+        let refreshControl = UIRefreshControl()
+        // good old days ;)
+        refreshControl.addTarget(coordinator, action: #selector(coordinator.refresh), for: .valueChanged)
+        webView.scrollView.refreshControl = refreshControl
         coordinator.webView = webView
         coordinator.setupSubscriptions()
         DispatchQueue.main.async {
@@ -75,6 +79,7 @@ struct WebView: UIViewRepresentable {
                 viewModel.update(currentUrl: webView.url)
                 viewModel.canGoBack = webView.canGoBack
                 viewModel.isLoading = false
+                webView.scrollView.refreshControl?.endRefreshing()
             }
         }
         
@@ -82,6 +87,7 @@ struct WebView: UIViewRepresentable {
             print("loading error: \(error)")
             DispatchQueue.main.async {
                 self.parent.viewModel.show(error: error)
+                webView.scrollView.refreshControl?.endRefreshing()
             }
         }
         
@@ -110,6 +116,11 @@ struct WebView: UIViewRepresentable {
                 }
                 return .cancel
             }
+        }
+        
+        @MainActor
+        @objc func refresh() {
+            parent.viewModel.handle(command: .reload)
         }
     }
 }
