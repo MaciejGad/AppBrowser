@@ -7,6 +7,8 @@ struct WebView: UIViewRepresentable {
     @EnvironmentObject private var safeBrowsing: SafeBrowsingViewModel
     @EnvironmentObject private var printingHelper: PrintHelper
     
+    private let cookieJar = CookieJar()
+    
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
@@ -22,10 +24,16 @@ struct WebView: UIViewRepresentable {
         webView.scrollView.refreshControl = refreshControl
         coordinator.webView = webView
         coordinator.setupSubscriptions()
-        DispatchQueue.main.async {
-            webView.load(URLRequest(url: viewModel.baseUrl))
+        Task {
+            await cookieJar.loadCookiesFromFile()
+            loadBaseURL(webView: webView)
         }
         return webView
+    }
+    
+    @MainActor
+    func loadBaseURL(webView: WKWebView) {
+        webView.load(URLRequest(url: viewModel.baseUrl))
     }
     
     func updateUIView(_ uiView: WKWebView, context: Context) {}
@@ -81,6 +89,7 @@ struct WebView: UIViewRepresentable {
                 viewModel.isLoading = false
                 webView.scrollView.refreshControl?.endRefreshing()
             }
+            parent.cookieJar.saveCookiesToFile()
         }
         
         func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
