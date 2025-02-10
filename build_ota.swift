@@ -165,8 +165,8 @@ if shouldPublish {
     shell("git checkout -B \(branch)")
     shell("mkdir -p docs")
     shell("mv \(ipaPath) \(plistPath) \(otaHTMLPath) docs/")
-
-    shell("git add docs/\(ipaName) docs/manifest.plist docs/index.html")
+    shell("./generate_qr.swift \(githubPagesURL) docs/qr.png")
+    shell("git add docs/\(ipaName) docs/manifest.plist docs/index.html docs/qr.png")
     shell("git commit -m \"🚀 Deploy OTA build \(Date())\"")
     shell("git push -f origin \(branch)")
 
