@@ -2,6 +2,8 @@ import Foundation
 import WebKit
 
 class CookieJar {
+    private let storage = SecureStorage()
+    
     func saveCookiesToFile() {
         let cookieStore = WKWebsiteDataStore.default().httpCookieStore
         cookieStore.getAllCookies { cookies in
@@ -9,8 +11,9 @@ class CookieJar {
             Task {
                 do {
                     let jsonData = try JSONEncoder().encode(codableCookies)
+                    let encryptedData = try self.storage.encrypt(data: jsonData)
                     let fileURL = try self.getCookiesFileURL()
-                    try jsonData.write(to: fileURL, options: .atomic)
+                    try encryptedData.write(to: fileURL, options: .atomic)
                     print("Cookies saved to file: \(fileURL.path)")
                 } catch {
                     print("Failed to save cookies: \(error)")
@@ -19,31 +22,37 @@ class CookieJar {
         }
     }
     
-    @MainActor
     func loadCookiesFromFile() async {
-        guard let fileURL = try? getCookiesFileURL() else {
-            return
+        do {
+            let cookies = try await loadData()
+            await store(cookies: cookies)
+            print("Cookies loaded from file.")
+        } catch {
+            print("\(error.localizedDescription)")
         }
-        guard let data = try? Data(contentsOf: fileURL) else {
-            return
-        }
-        guard let cookies = try? JSONDecoder().decode([Cookie].self, from: data) else {
-            return
-        }
-        
+    }
+    
+    @MainActor
+    private func store(cookies: [Cookie]) async {
         let cookieStore = WKWebsiteDataStore.default().httpCookieStore
         for cookie in cookies {
             guard let httpCookie = cookie.toHTTPCookie() else { continue }
             await cookieStore.setCookie(httpCookie)
         }
-        print("Cookies loaded from file.")
+    }
+    
+    private func loadData() async throws  -> [Cookie] {
+        let fileURL = try getCookiesFileURL()
+        let encryptedData = try Data(contentsOf: fileURL)
+        let data = try storage.decryp(data: encryptedData)
+        return try JSONDecoder().decode([Cookie].self, from: data)
     }
     
     func getCookiesFileURL() throws  -> URL {
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             throw Error.noDocumentDirectory
         }
-        return documentDirectory.appendingPathComponent("cookies.json")
+        return documentDirectory.appendingPathComponent("cookies.dat")
     }
     
     
