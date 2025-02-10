@@ -141,7 +141,7 @@ let manifestPlist = manifestTemplate
     .replacingOccurrences(of: "$(bundleIdentifier)", with: bundleIdentifier)
     .replacingOccurrences(of: "$(ipaURL)", with: ipaURL)
     .replacingOccurrences(of: "$(projectName)", with: projectName)
-    
+
 try manifestPlist.write(toFile: plistPath, atomically: true, encoding: .utf8)
 
 print("📝 Generating OTA installation page...")
@@ -163,9 +163,10 @@ try otaHTML.write(toFile: otaHTMLPath, atomically: true, encoding: .utf8)
 if shouldPublish {
     print("🚀 Deploying to GitHub Pages...")
     shell("git checkout -B \(branch)")
-    shell("mv \(ipaPath) \(plistPath) \(otaHTMLPath) .")
+    shell("mkdir -p docs")
+    shell("mv \(ipaPath) \(plistPath) \(otaHTMLPath) docs/")
 
-    shell("git add \(ipaName) manifest.plist index.html")
+    shell("git add docs/\(ipaName) docs/manifest.plist docs/index.html")
     shell("git commit -m \"🚀 Deploy OTA build \(Date())\"")
     shell("git push -f origin \(branch)")
 
