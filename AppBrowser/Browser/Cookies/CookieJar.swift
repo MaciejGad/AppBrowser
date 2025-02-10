@@ -6,13 +6,15 @@ class CookieJar {
         let cookieStore = WKWebsiteDataStore.default().httpCookieStore
         cookieStore.getAllCookies { cookies in
             let codableCookies = cookies.map { Cookie(from: $0) }
-            do {
-                let jsonData = try JSONEncoder().encode(codableCookies)
-                let fileURL = try self.getCookiesFileURL()
-                try jsonData.write(to: fileURL, options: .atomic)
-                print("Cookies saved to file: \(fileURL.path)")
-            } catch {
-                print("Failed to save cookies: \(error)")
+            Task {
+                do {
+                    let jsonData = try JSONEncoder().encode(codableCookies)
+                    let fileURL = try self.getCookiesFileURL()
+                    try jsonData.write(to: fileURL, options: .atomic)
+                    print("Cookies saved to file: \(fileURL.path)")
+                } catch {
+                    print("Failed to save cookies: \(error)")
+                }
             }
         }
     }
