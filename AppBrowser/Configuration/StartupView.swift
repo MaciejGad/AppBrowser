@@ -9,7 +9,7 @@ struct StartupView<Content: View>: View {
             mainContent(configuration)
                 .environmentObject(configuration)
         } else if let error = configViewModel.error {
-            ConfigurationErrorView(
+           ErrorView(
                 title: "App Startup Error",
                 message: error.localizedDescription
             )

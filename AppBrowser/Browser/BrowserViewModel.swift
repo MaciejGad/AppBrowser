@@ -46,6 +46,10 @@ final class BrowserViewModel: ObservableObject {
     @MainActor
     private
     func goBack() {
+        guard canGoBack else {
+            return
+        }
+        isLoading = false
         if error == nil {
             stateSubject.send(.goBack)
         } else {

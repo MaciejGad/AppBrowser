@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ConfigurationErrorView: View {
+struct ErrorView: View {
     var title: String
     var message: String
 
@@ -31,9 +31,9 @@ struct ConfigurationErrorView: View {
     }
 }
 
-struct ConfigurationErrorView_Previews: PreviewProvider {
+struct ErrorView_Previews: PreviewProvider {
     static var previews: some View {
-        ConfigurationErrorView(
+        ErrorView(
             title: "App Startup Error",
             message: "Something went wrong. Please check your internet connection and try again.")
     }

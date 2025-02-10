@@ -5,24 +5,28 @@ struct BrowserView: View {
     @EnvironmentObject private var safeBrowsing: SafeBrowsingViewModel
     
     var body: some View {
-        ZStack {
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
+            ZStack {
+                WebView()
+                    .edgesIgnoringSafeArea(.all)
                 if let error = viewModel.error {
-                    ConfigurationErrorView(
+                    ErrorView(
                         title: "Browser Error",
                         message: error.localizedDescription
                     )
                     Spacer()
-                } else {
-                    WebView()
-                        .edgesIgnoringSafeArea(.all)
                 }
-                BrowserToolbar()
+                if viewModel.isLoading {
+                    ProgressView()
+                }
             }
-            if viewModel.isLoading {
-                ProgressView()
-            }
+            BrowserToolbar()
         }
+        .gesture(DragGesture().onEnded { value in
+            if value.startLocation.x < 20 && value.translation.width > 60 {
+                viewModel.handle(command: .goBack)
+            }
+        })
         .alert(item: $safeBrowsing.alertData) { alertData in
             Alert(
                 title: Text(alertData.title),
