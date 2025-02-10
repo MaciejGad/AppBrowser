@@ -173,4 +173,5 @@ if shouldPublish {
     print("🎉 OTA build deployed!")
     print("➡️ Share this link with testers:")
     print("📲 \(githubPagesURL)/index.html")
+    shell("git checkout main")
 }
