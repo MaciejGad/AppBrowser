@@ -9,6 +9,13 @@ func resizeImage(atPath path: String, toSize size: CGSize, outputPath: String) t
 
     let realSize = CGSize(width: size.width * 0.5, height: size.height * 0.5) 
 
+    if image.size == realSize {
+        print("Image already has the correct size. Coping to \(outputPath)")
+        try fileManager.removeItem(atPath: outputPath)
+        try fileManager.copyItem(atPath: path, toPath: outputPath)
+        return
+    }
+
     let newImage = NSImage(size: realSize)
     newImage.lockFocus()
 
@@ -42,8 +49,10 @@ let currentDirectoryPath = fileManager.currentDirectoryPath
 
 let outputPath = "\(currentDirectoryPath)/output.png"
 
-let icon57Path = "\(currentDirectoryPath)/icon.57x57.png"
-let icon512Path = "\(currentDirectoryPath)/icon.512x512.png"
+let destinationPath = "\(currentDirectoryPath)/AppBrowser/Assets.xcassets/AppIcon.appiconset/icon.png"
+let icon57Path = "\(currentDirectoryPath)/build/icon.57x57.png"
+let icon512Path = "\(currentDirectoryPath)/build/icon.512x512.png"
 
-try resizeImage(atPath: outputPath, toSize: CGSize(width: 57, height: 57), outputPath: icon57Path)
+try resizeImage(atPath: outputPath, toSize: CGSize(width: 1024, height: 1024), outputPath: destinationPath)
 try resizeImage(atPath: outputPath, toSize: CGSize(width: 512, height: 512), outputPath: icon512Path)
+try resizeImage(atPath: outputPath, toSize: CGSize(width: 57, height: 57), outputPath: icon57Path)

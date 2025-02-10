@@ -1,3 +1,5 @@
 .vscode
 *.xcuserdatad
 colors_tests
+archives
+build

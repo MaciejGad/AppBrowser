@@ -94,51 +94,16 @@ func resize() throws {
     try run(command: "swift", arguments: ["resize_icons.swift"])
 }
 
-func resizeImage(atPath path: String, toSize size: CGSize) throws {
-    guard let image = NSImage(contentsOfFile: path) else {
-        throw NSError(domain: "Cannot load image", code: 1)
-    }
-
-    let newImage = NSImage(size: size)
-    newImage.lockFocus()
-
-    let rect = NSRect(origin: .zero, size: size)
-    let imageRect = NSRect(origin: .zero, size: image.size)
-    let aspectRatio = min(size.width / image.size.width, size.height / image.size.height)
-    let scaledImageRect = NSRect(
-        x: (size.width - image.size.width * aspectRatio) / 2,
-        y: (size.height - image.size.height * aspectRatio) / 2,
-        width: image.size.width * aspectRatio,
-        height: image.size.height * aspectRatio
-    )
-
-    NSColor.white.setFill()
-    rect.fill()
-
-    image.draw(in: scaledImageRect, from: imageRect, operation: .sourceOver, fraction: 1.0)
-    newImage.unlockFocus()
-
-    guard let tiffData = newImage.tiffRepresentation,
-            let bitmap = NSBitmapImageRep(data: tiffData),
-            let pngData = bitmap.representation(using: .png, properties: [:]) else {
-        throw NSError(domain: "Cannot create PNG data", code: 2)
-    }
-
-    try pngData.write(to: URL(fileURLWithPath: path))
-}
-
 if config.shouldCreateIcon {
     // Remove existing output.png file
     let outputPath = "\(currentDirectoryPath)/output.png"
-    let destinationPath = "\(currentDirectoryPath)/AppBrowser/Assets.xcassets/AppIcon.appiconset/icon.png"
-
+    
     try remove(file: outputPath)
 
     if let iconName = config.icon_name {
         // Generate icon using icon_gen.swift
         let iconBackgroundColor = config.icon_background_color ?? "#3498db"  // Default color is blue  
         try generate(iconName: iconName, iconBackgroundColor: iconBackgroundColor, output: outputPath)
-        try copy(file: outputPath, to: destinationPath)
     } else if let iconLink = config.icon_link {
         // Download icon from URL
         guard let url = URL(string: iconLink) else {
@@ -146,8 +111,6 @@ if config.shouldCreateIcon {
         }
         let data = try Data(contentsOf: url)
         fileManager.createFile(atPath: outputPath, contents: data, attributes: nil)
-        try resizeImage(atPath: outputPath, toSize: CGSize(width: 512, height: 512))
-        try copy(file: outputPath, to: destinationPath)
     }
     try resize()
 }
