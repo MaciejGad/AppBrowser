@@ -48,18 +48,17 @@ final class SafeBrowsingViewModel: ObservableObject {
         if exceptions.contains(url) {
             return .inApp
         }
-        
+        if let currentContinuation = self.continuation{
+            currentContinuation.resume(returning: .inApp)
+        }
+        await MainActor.run {
+            alertData = AlertData(
+                title: "Otworzyć link?",
+                message: "Czy chcesz otworzyć link:\n\(url.absoluteString)\nw zewnętrznej przeglądarce?"
+            )
+        }
         return await withCheckedContinuation { continuation in
-            DispatchQueue.main.async {
-                if let currentContinuation = self.continuation{
-                    currentContinuation.resume(returning: .inApp)
-                }
-                self.continuation = continuation
-                self.alertData = AlertData(
-                    title: "Otworzyć link?",
-                    message: "Czy chcesz otworzyć link:\n\(url.absoluteString)\nw zewnętrznej przeglądarce?"
-                )
-            }
+            self.continuation = continuation
         }
     }
     

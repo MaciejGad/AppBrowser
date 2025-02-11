@@ -7,24 +7,22 @@ func resizeImage(atPath path: String, toSize size: CGSize, outputPath: String) t
         throw NSError(domain: "Cannot load image", code: 1)
     }
 
-    let realSize = CGSize(width: size.width * 0.5, height: size.height * 0.5) 
-
-    if image.size == realSize {
+    if image.size == size {
         print("Image already has the correct size. Coping to \(outputPath)")
         try fileManager.removeItem(atPath: outputPath)
         try fileManager.copyItem(atPath: path, toPath: outputPath)
         return
     }
 
-    let newImage = NSImage(size: realSize)
+    let newImage = NSImage(size: size)
     newImage.lockFocus()
 
-    let rect = NSRect(origin: .zero, size: realSize)
+    let rect = NSRect(origin: .zero, size: size)
     let imageRect = NSRect(origin: .zero, size: image.size)
-    let aspectRatio = min(realSize.width / image.size.width, realSize.height / image.size.height)
+    let aspectRatio = min(size.width / image.size.width, size.height / image.size.height)
     let scaledImageRect = NSRect(
-        x: (realSize.width - image.size.width * aspectRatio) / 2,
-        y: (realSize.height - image.size.height * aspectRatio) / 2,
+        x: (size.width - image.size.width * aspectRatio) / 2,
+        y: (size.height - image.size.height * aspectRatio) / 2,
         width: image.size.width * aspectRatio,
         height: image.size.height * aspectRatio
     )

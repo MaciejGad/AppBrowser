@@ -43,13 +43,14 @@ func loadFont(from path: String, size: CGFloat) -> NSFont? {
     }
     
     let provider = CGDataProvider(data: fontData)
-    guard let cgFont = CGFont(provider!) else {
+    guard CGFont(provider!) != nil else {
         print("❌ Error loading font")
         return nil
     }
     
     var error: Unmanaged<CFError>?
-    if !CTFontManagerRegisterGraphicsFont(cgFont, &error) {
+    let fontURL = URL(fileURLWithPath: path)
+    if !CTFontManagerRegisterFontsForURL(fontURL as CFURL, .process, &error) {
         print("❌ Font registration failed: \(error!.takeUnretainedValue())")
         return nil
     }
