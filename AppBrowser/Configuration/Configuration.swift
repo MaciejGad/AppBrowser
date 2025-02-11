@@ -8,6 +8,7 @@ final class Configuration: ObservableObject {
     let exceptionList: URL?
     let toolbarItems: String?
     let showPath: Bool
+    let externalHostHandlingModel: ExternalHostHandlingModel
     
     init(
         url: URL,
@@ -16,14 +17,17 @@ final class Configuration: ObservableObject {
         autoAuthentication: Bool,
         exceptionList: URL?,
         toolbarItems: String?,
-        showPath: Bool) {
-            self.url = url
-            self.host = host
-            self.useBiometric = useBiometric
-            self.autoAuthentication = autoAuthentication
-            self.exceptionList = exceptionList
-            self.toolbarItems = toolbarItems
-            self.showPath = showPath
+        showPath: Bool,
+        externalHostHandlingModel: ExternalHostHandlingModel
+    ) {
+        self.url = url
+        self.host = host
+        self.useBiometric = useBiometric
+        self.autoAuthentication = autoAuthentication
+        self.exceptionList = exceptionList
+        self.toolbarItems = toolbarItems
+        self.showPath = showPath
+        self.externalHostHandlingModel = externalHostHandlingModel
     }
     
     static func loadConfiguration() throws -> Configuration {
@@ -48,7 +52,13 @@ final class Configuration: ObservableObject {
         }
         let toolbarItems = dictionary[Key.toolbarItems.rawValue] as? String
         let showPath = dictionary[Key.showPath.rawValue] as? String ?? "NO"
+        let externalHost: ExternalHostHandlingModel
         
+        if let externalHostRaw = dictionary[Key.externalHost.rawValue] as? String {
+            externalHost = .init(rawValue: externalHostRaw) ?? .ask
+        } else {
+            externalHost = .ask
+        }
         return Configuration(
             url: url,
             host: host,
@@ -56,7 +66,8 @@ final class Configuration: ObservableObject {
             autoAuthentication: autoAuthentication.toBool(),
             exceptionList: exceptionList,
             toolbarItems: toolbarItems,
-            showPath: showPath.toBool()
+            showPath: showPath.toBool(),
+            externalHostHandlingModel: externalHost
         )
     }
     
@@ -68,6 +79,7 @@ final class Configuration: ObservableObject {
         case excpetionList = "EXCEPTIONS_LIST"
         case toolbarItems = "TOOLBAR_ITEMS"
         case showPath = "SHOW_PATH"
+        case externalHost = "EXTERNAL_HOST"
     }
     
     enum Error: Swift.Error, LocalizedError {

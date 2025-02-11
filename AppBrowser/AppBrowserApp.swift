@@ -28,7 +28,8 @@ struct AppBrowserApp: App {
                 .environmentObject(
                     SafeBrowsingViewModel(
                         baseHost: configuration.host,
-                        exceptionList: configuration.exceptionList
+                        exceptionList: configuration.exceptionList,
+                        externalHostHandlingModel: configuration.externalHostHandlingModel
                     )
                 )
                 .environmentObject(

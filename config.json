@@ -7,7 +7,7 @@
     "icon_background_color": "#3498db",
     "exception_list_url": "https://raw.githubusercontent.com/MaciejGad/AppBrowser/refs/heads/main/AppBrowser/url_exceptions.json",
     "exception_list": [
-        "https://maciejgad.pl"
+        "maciejgad.pl"
     ],
     "show_path": true,
     "toolbar_items": "goBack,loadHome,reload,openInExternalBrowser,print"

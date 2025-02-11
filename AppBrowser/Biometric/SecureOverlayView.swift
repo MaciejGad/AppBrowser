@@ -19,7 +19,7 @@ struct SecureOverlayView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 80, height: 80)
-                        .foregroundColor(.blue)
+                        .foregroundColor(.accentColor)
                     Text("Odblokuj aplikację")
                         .font(.title)
                     if let errorMessage = viewModel.errorMessage {
@@ -33,7 +33,7 @@ struct SecureOverlayView: View {
                             .font(.headline)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(Color.blue)
+                            .background(Color.accentColor)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }

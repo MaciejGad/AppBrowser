@@ -112,7 +112,10 @@ struct WebView: UIViewRepresentable {
                 return .cancel
             }
             if url.absoluteString == "about:blank" {
-                return .cancel
+                return .allow
+            }
+            if url.absoluteString == "about:srcdoc" {
+                return .allow
             }
             let action = await parent.safeBrowsing.shouldOpenInExternalBrowser(url: navigationAction.request.url)
             switch action {
@@ -123,6 +126,8 @@ struct WebView: UIViewRepresentable {
                     parent.viewModel.currentURL = url
                     parent.viewModel.handle(command: .openInExternalBrowser)
                 }
+                return .cancel
+            case .reject:
                 return .cancel
             }
         }

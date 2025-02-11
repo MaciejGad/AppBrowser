@@ -24,11 +24,14 @@ struct Config: Codable {
     let auto_authenticate: Bool?
     let icon_name: String?
     let icon_background_color: String?
+    let icon_gradient: Bool?
     let icon_link: String? 
+    let external_host: String?
     let exception_list_url: String?
     let exception_list: [String]?
     let toolbar_items: String?
     let show_path: Bool?
+
     
     var shouldCreateIcon: Bool {
         return icon_name != nil || icon_link != nil
@@ -86,8 +89,8 @@ func run(command: String, arguments: [String]) throws {
     process.waitUntilExit()
 }
 
-func generate(iconName: String, iconBackgroundColor: String, output: String) throws{
-    try run(command: "swift", arguments: ["icon_gen.swift", iconName, iconBackgroundColor, output])
+func generate(iconName: String, iconBackgroundColor: String, output: String, backgroundGradient: Bool) throws {
+    try run(command: "swift", arguments: ["icon_gen.swift", iconName, iconBackgroundColor, output, backgroundGradient ? "YES" : "NO"])
 }
 
 func resize() throws {
@@ -101,9 +104,14 @@ if config.shouldCreateIcon {
     try remove(file: outputPath)
 
     if let iconName = config.icon_name {
+        let iconGradient = config.icon_gradient ?? true
         // Generate icon using icon_gen.swift
         let iconBackgroundColor = config.icon_background_color ?? "#3498db"  // Default color is blue  
-        try generate(iconName: iconName, iconBackgroundColor: iconBackgroundColor, output: outputPath)
+        try generate(
+            iconName: iconName, 
+            iconBackgroundColor: iconBackgroundColor, 
+            output: outputPath, 
+            backgroundGradient: iconGradient)
     } else if let iconLink = config.icon_link {
         // Download icon from URL
         guard let url = URL(string: iconLink) else {
@@ -115,6 +123,8 @@ if config.shouldCreateIcon {
     try resize()
 }
 
+try run(command: "swift", arguments: ["color_gen.swift", config.icon_background_color ?? "#3498db", "AppBrowser/Assets.xcassets/AccentColor.colorset/Contents.json"])
+
 xcconfigContent += "BASE_HOST = \(baseHost)\n"
 xcconfigContent += "BASE_PATH = \(basePath)\n"
 if let exceptionListURL = config.exception_list_url {
@@ -125,6 +135,10 @@ if let exception_list = config.exception_list {
     let exceptionListData = try JSONSerialization.data(withJSONObject: exception_list, options: .prettyPrinted)
     let exceptionListPath = "\(currentDirectoryPath)/AppBrowser/url_exceptions.json"
     try exceptionListData.write(to: URL(fileURLWithPath: exceptionListPath))
+}
+
+if let externalHost = config.external_host {
+    xcconfigContent += "EXTERNAL_HOST = \(externalHost)\n"
 }
 
 if let toolbarItems = config.toolbar_items {

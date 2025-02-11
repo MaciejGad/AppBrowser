@@ -27,7 +27,7 @@ struct Cookie: Codable {
             .value: value,
             .domain: domain,
             .path: path,
-            .secure: isSecure,
+            .secure: isSecure
         ]
 
         if let expiresDate = expiresDate {

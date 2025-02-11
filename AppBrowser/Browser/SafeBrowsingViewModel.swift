@@ -7,12 +7,18 @@ final class SafeBrowsingViewModel: ObservableObject {
     private let exceptionList: URL?
     
     private var continuation: CheckedContinuation<OpenExternalHostAction, Never>? = nil
-    private var exceptions: Set<String> = []
+    private let exceptions = ExceptionList()
+
     private var safeHostLeft: Bool = false
+    private var externalHostHandlingModel: ExternalHostHandlingModel
     
-    init(baseHost: String, exceptionList: URL?) {
+    init(baseHost: String,
+        exceptionList: URL?,
+        externalHostHandlingModel: ExternalHostHandlingModel
+    ) {
         self.baseHost = baseHost
         self.exceptionList = exceptionList
+        self.externalHostHandlingModel = externalHostHandlingModel
         loadExceptions()
     }
     
@@ -22,15 +28,16 @@ final class SafeBrowsingViewModel: ObservableObject {
     }
     
     func shouldOpenInExternalBrowser(url: URL?) async -> OpenExternalHostAction {
-        guard let url = url else { return .inApp }
-        var absoluteString = url.absoluteString
-        if absoluteString.hasSuffix("/") {
-            absoluteString = String(absoluteString.dropLast())
-        }
-        print(absoluteString)
-        if exceptions.contains(absoluteString) {
+        if externalHostHandlingModel == .allow {
             return .inApp
         }
+        if externalHostHandlingModel == .reject {
+            return .reject
+        }
+        guard let url else {
+            return .inApp
+        }
+        print("checking: \(url.absoluteString)")
         if isSafeHost(url: url) {
             safeHostLeft = false
             return .inApp
@@ -38,6 +45,10 @@ final class SafeBrowsingViewModel: ObservableObject {
         if safeHostLeft {
             return .inApp
         }
+        if exceptions.contains(url) {
+            return .inApp
+        }
+        
         return await withCheckedContinuation { continuation in
             DispatchQueue.main.async {
                 if let currentContinuation = self.continuation{
@@ -109,7 +120,7 @@ private extension SafeBrowsingViewModel {
     func decode(exceptionListData: Data) async throws {
         let exceptionList = try JSONDecoder().decode([String].self, from: exceptionListData)
         await MainActor.run {
-            exceptions = Set(exceptionList)
+            exceptions.load(list: exceptionList)
         }
     }
 }
@@ -117,4 +128,5 @@ private extension SafeBrowsingViewModel {
 enum OpenExternalHostAction {
     case inApp
     case externalBrower
+    case reject
 }

@@ -11,6 +11,8 @@ guard CommandLine.arguments.count > 1 else {
 
 let iconUnicode = CommandLine.arguments[1]
 let inputHexColor = CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : "#3498db"
+let iconGradientRaw = CommandLine.arguments.count > 4 ? CommandLine.arguments[4] : "YES"
+let iconGradient = iconGradientRaw.lowercased() == "yes"
 
 // Path to the FontAwesome.ttf font file
 let fontPath = "./FontAwesome.ttf"
@@ -62,7 +64,8 @@ guard let baseColor = colorFromHex(inputHexColor) else {
 }
 
 // Generating the second color (70% darker)
-let gradientColor = baseColor.blended(withFraction: 0.7, of: NSColor.black) ?? baseColor
+let withFraction = iconGradient ? 0.7 : 0.0
+let gradientColor = baseColor.blended(withFraction: withFraction, of: NSColor.black) ?? baseColor
 
 // Setting the sizes
 let canvasSize = NSSize(width: 512, height: 512)
