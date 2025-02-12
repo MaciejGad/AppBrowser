@@ -18,6 +18,7 @@ struct WebView: UIViewRepresentable {
         let coordinator = context.coordinator
         webView.navigationDelegate = coordinator
         webView.uiDelegate = coordinator
+        webView.allowsBackForwardNavigationGestures = true
         let refreshControl = UIRefreshControl()
         // good old days ;)
         refreshControl.addTarget(coordinator, action: #selector(coordinator.refresh), for: .valueChanged)
@@ -90,6 +91,12 @@ struct WebView: UIViewRepresentable {
                 webView.scrollView.refreshControl?.endRefreshing()
             }
             parent.cookieJar.saveCookiesToFile()
+        }
+        
+        func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+            let viewModel = self.parent.viewModel
+            viewModel.isLoading = false
+            viewModel.canGoBack = webView.canGoBack
         }
         
         func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {

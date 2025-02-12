@@ -22,11 +22,6 @@ struct BrowserView: View {
             }
             BrowserToolbar()
         }
-        .gesture(DragGesture().onEnded { value in
-            if value.startLocation.x < 20 && value.translation.width > 60 {
-                viewModel.handle(command: .goBack)
-            }
-        })
         .alert(item: $safeBrowsing.alertData) { alertData in
             Alert(
                 title: Text(alertData.title),
