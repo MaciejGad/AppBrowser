@@ -53,7 +53,7 @@ func saveImage(_ image: NSImage, to filePath: String) {
 // Script usage
 let arguments = CommandLine.arguments
 if arguments.count < 3 {
-    print("Usage: script <URL> <Output Path>")
+    print("Usage: \(arguments[0]) <URL> <Output Path>")
     exit(1)
 }
 
